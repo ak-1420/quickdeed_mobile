@@ -5,7 +5,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +15,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Scaffold()
+      home: const Scaffold(
+         
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
