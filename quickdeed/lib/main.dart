@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:quickdeed/screeens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,16 +14,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Quick Deed',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+
+    // restrict device orientation to portrait only
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
+
+
+
+    return ScreenUtilInit(
+
+      designSize: const Size(360 , 640),
+
+      builder: () => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Quick Deed',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.pacificoTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
+
+        initialRoute: '/',
+
+        routes: {
+          '/' : (context) => const SplashScreen(),
+        },
+
       ),
-      home: const Scaffold(
-         
-      ),
-      debugShowCheckedModeBanner: false,
+
+
+
     );
-  }
+
+
+
+
+  } // end of build method
+
+
+
 }
 
