@@ -56,6 +56,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     },
                     child: const Icon(Icons.arrow_back,
                       size: 30,
+                      color: Colors.white,
                     ),
                   ),
                 ],

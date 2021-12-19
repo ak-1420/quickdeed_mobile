@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/screeens/send_otp_screen.dart';
+import 'package:quickdeed/screeens/sign_up_screen_one.dart';
 import 'package:quickdeed/screeens/splash_screen.dart';
 import 'package:quickdeed/screeens/verify_otp_screen.dart';
 
@@ -39,12 +40,13 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
-        initialRoute: '/verifyOtp',
+        initialRoute: '/signUpOne',
 
         routes: {
           '/' : (context) => SplashScreen(),
           '/sendOtp' : (context) => SendOtpScreen(),
           '/verifyOtp' :  (context) => VerifyOtpScreen(),
+          '/signUpOne' : (context) => SignUpScreenOne(),
         },
 
       ),
