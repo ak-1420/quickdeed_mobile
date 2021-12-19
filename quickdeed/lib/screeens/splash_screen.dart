@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashScreen extends StatefulWidget {
 
-  const SplashScreen({Key? key}) : super(key: key);
+   SplashScreen({Key? key}) : super(key: key);
 
 
 
