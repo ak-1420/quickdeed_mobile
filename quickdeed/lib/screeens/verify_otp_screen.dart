@@ -164,6 +164,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       ),
                       onPressed: () {
                         // TODO: Verify Otp entered by the user
+
+                        Navigator.pushNamed(context , '/signUpOne');
                       },
                       child: Text("Submit",
                         style: TextStyle(

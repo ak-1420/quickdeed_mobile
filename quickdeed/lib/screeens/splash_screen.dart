@@ -46,11 +46,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
             const Spacer(),
 
-            Text(  "Quick Deed" ,
-              style: GoogleFonts.pacifico(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 50.sp,
-                  color: const Color.fromRGBO(249, 250, 253, 1)
+            InkWell(
+              onDoubleTap: () {
+                Navigator.pushNamed(context, '/sendOtp');
+              },
+              child: Text(  "Quick Deed" ,
+                style: GoogleFonts.pacifico(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 50.sp,
+                    color: const Color.fromRGBO(249, 250, 253, 1)
+                ),
               ),
             ),
 

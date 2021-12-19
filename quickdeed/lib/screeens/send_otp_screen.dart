@@ -136,6 +136,8 @@ class _SendOtpScreenState extends State<SendOtpScreen> {
                       ),
                       onPressed: () {
                         // TODO: handle send otp to mobile  functionality
+
+                        Navigator.pushNamed(context , '/verifyOtp');
                       },
                       child: Text("Continue",
                         style: TextStyle(

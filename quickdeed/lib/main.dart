@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
-        initialRoute: '/signUpOne',
+        initialRoute: '/',
 
         routes: {
           '/' : (context) => SplashScreen(),
