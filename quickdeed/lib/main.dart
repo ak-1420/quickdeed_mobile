@@ -6,30 +6,24 @@ import 'package:quickdeed/screeens/send_otp_screen.dart';
 import 'package:quickdeed/screeens/sign_up_screen_one.dart';
 import 'package:quickdeed/screeens/splash_screen.dart';
 import 'package:quickdeed/screeens/verify_otp_screen.dart';
+import 'package:quickdeed/screeens/post_Work.dart';
+import 'package:quickdeed/screeens/home_screem.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     // restrict device orientation to portrait only
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]);
-
-
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return ScreenUtilInit(
-
-      designSize: const Size(360 , 640),
-
+      designSize: const Size(360, 640),
       builder: () => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Quick Deed',
@@ -39,28 +33,17 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-
         initialRoute: '/',
-
         routes: {
-          '/' : (context) => SplashScreen(),
-          '/sendOtp' : (context) => SendOtpScreen(),
-          '/verifyOtp' :  (context) => VerifyOtpScreen(),
-          '/signUpOne' : (context) => SignUpScreenOne(),
+          '/': (context) => SplashScreen(),
+          '/sendOtp': (context) => SendOtpScreen(),
+          '/verifyOtp': (context) => VerifyOtpScreen(),
+          '/signUpOne': (context) => SignUpScreenOne(),
+          '/postWork': (context) => PostWorkScreen(),
+          '/home': (context) => HomeScreen(),
         },
-
       ),
-
-
-
     );
-
-
-
-
   } // end of build method
 
-
-
 }
-

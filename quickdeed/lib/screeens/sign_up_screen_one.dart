@@ -265,7 +265,9 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
 
                       ),
                       onPressed: () {
-                        // TODO : Handle user signup
+                        // TODO: handle send otp to mobile  functionality
+
+                        Navigator.pushNamed(context , '/postWork');
                       },
                       child: Text("Continue",
                         style: TextStyle(
