@@ -48,6 +48,7 @@ dependencies:
   image_picker: ^0.8.4+4
 
   flutter_rating_bar: ^4.0.0
+  sticky_footer_scrollview: ^1.1.0
 
 
 

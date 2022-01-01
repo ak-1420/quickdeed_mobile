@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../Models/users_model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-import 'package:image_picker/image_picker.dart';
+import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
+// import 'package:image_picker/image_picker.dart';
 import '../Models/works_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
   final nameController = TextEditingController();
 
   final emailController = TextEditingController();
@@ -77,6 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
           createdTime: DateTime.now(),
           location: "1.5km away"),
     ];
+   
+   void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
     return Scaffold(
       appBar: AppBar(
         title: _isSearch
@@ -204,6 +211,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }).toList(),
             ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle),
+            
+            label: 'Post',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.group_add_outlined),
+            label: 'Connections',
+            backgroundColor: Color.fromRGBO(184, 183, 255, 1),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.perm_device_information),
+            label: 'About',
+            backgroundColor: Color.fromRGBO(184, 183, 255, 1),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
