@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    bool viewUsers = true;
+    bool viewUsers = false;
     final List<Users> users = [
       Users(userId: "1", userName: "Hema", rating: 4.4, location: "4.4km away"),
       Users(userId: "1", userName: "Arun", rating: 4.4, location: "4.4km away"),
@@ -78,12 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
           createdTime: DateTime.now(),
           location: "1.5km away"),
     ];
-   
-   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+
+    void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: _isSearch
@@ -115,69 +116,81 @@ class _HomeScreenState extends State<HomeScreen> {
       body: viewUsers
           ? Column(
               children: users.map((users) {
-                return Card(
-                  elevation: 5,
-                  // margin: ,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            ExactAssetImage('images/user.jpeg', scale: 1.0),
-                        // backgroundColor: const Color.fromRGBO(229, 229, 229, 1),
-                        radius: 29.r,
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(users.userName),
-                              Text(users.location),
-                            ],
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/viewUser');
+                  },
+                  child: Card(
+                    elevation: 10,
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: CircleAvatar(
+                            backgroundImage:
+                                ExactAssetImage('images/user.jpeg', scale: 1.0),
+                            // backgroundColor: const Color.fromRGBO(229, 229, 229, 1),
+                            radius: 29.r,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                width: 200,
-                                height: 100,
-                                child: RatingBar.builder(
-                                  initialRating: users.rating,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  // itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                    size: 2,
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(users.userName),
+                                Text(users.location),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  width: 200,
+                                  height: 100,
+                                  child: RatingBar.builder(
+                                    initialRating: users.rating,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    // itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                      size: 2,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
                                   ),
-                                  onRatingUpdate: (rating) {
-                                    print(rating);
-                                  },
                                 ),
-                              ),
-                              Card(child: Text("Skill 1")),
-                              Card(
-                                child: Text("Skill 2"),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                                Card(child: Text("Skill 1")),
+                                Card(
+                                  child: Text("Skill 2"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }).toList(),
             )
           : Column(
               children: works.map((works) {
-                return Card(
-                  child: Row(
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/viewWork');
+                  },
+                  child: Card(
+                      child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: ExactAssetImage('images/work.jpeg'),
+                        backgroundImage:
+                            ExactAssetImage('images/work.jpeg', scale: 1),
                         // backgroundColor: const Color.fromRGBO(229, 229, 229, 1),
                         radius: 29.r,
                       ),
@@ -207,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ],
-                  ),
+                  )),
                 );
               }).toList(),
             ),
@@ -216,6 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+            backgroundColor: Color.fromRGBO(184, 183, 255, 1),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -223,7 +237,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle),
-            
             label: 'Post',
           ),
           BottomNavigationBarItem(

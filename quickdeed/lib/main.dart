@@ -5,9 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/screeens/send_otp_screen.dart';
 import 'package:quickdeed/screeens/sign_up_screen_one.dart';
 import 'package:quickdeed/screeens/splash_screen.dart';
+import 'package:quickdeed/screeens/user_Details_screen.dart';
 import 'package:quickdeed/screeens/verify_otp_screen.dart';
 import 'package:quickdeed/screeens/post_Work.dart';
 import 'package:quickdeed/screeens/home_screem.dart';
+import 'package:quickdeed/screeens/user_Details_screen.dart';
+import 'package:quickdeed/screeens/work_details_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +44,8 @@ class MyApp extends StatelessWidget {
           '/signUpOne': (context) => SignUpScreenOne(),
           '/postWork': (context) => PostWorkScreen(),
           '/home': (context) => HomeScreen(),
+          '/viewUser':(context) => User_Details_Screen(),
+          '/viewWork':(context) => Work_Details_Screen(),
         },
       ),
     );
