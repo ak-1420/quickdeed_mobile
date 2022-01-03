@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    bool viewUsers = false;
+    bool viewUsers = true;
     final List<Users> users = [
       Users(userId: "1", userName: "Hema", rating: 4.4, location: "4.4km away"),
       Users(userId: "1", userName: "Arun", rating: 4.4, location: "4.4km away"),
@@ -83,6 +83,24 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _selectedIndex = index;
       });
+
+      switch (_selectedIndex) {
+        case 0:
+          Navigator.pushNamed(context, '/home');
+          break;
+        case 1:
+          Navigator.pushNamed(context, '/myProfile');
+          break;
+        case 2:
+          Navigator.pushNamed(context, '/home');
+          break;
+        case 3:
+          Navigator.pushNamed(context, '/connections');
+          break;
+        case 4:
+          Navigator.pushNamed(context, '/home');
+          break;
+      }
     }
 
     return Scaffold(

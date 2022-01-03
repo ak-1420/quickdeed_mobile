@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickdeed/screeens/profile_screen.dart';
 import 'package:quickdeed/screeens/send_otp_screen.dart';
 import 'package:quickdeed/screeens/sign_up_screen_one.dart';
 import 'package:quickdeed/screeens/splash_screen.dart';
@@ -11,6 +12,7 @@ import 'package:quickdeed/screeens/post_Work.dart';
 import 'package:quickdeed/screeens/home_screem.dart';
 import 'package:quickdeed/screeens/user_Details_screen.dart';
 import 'package:quickdeed/screeens/work_details_screen.dart';
+import 'package:quickdeed/screeens/connections_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,6 +48,8 @@ class MyApp extends StatelessWidget {
           '/home': (context) => HomeScreen(),
           '/viewUser':(context) => User_Details_Screen(),
           '/viewWork':(context) => Work_Details_Screen(),
+          '/connections':(context) => Connections_Screen(),
+          '/myProfile': (context)=> MyProfile_Screen(),
         },
       ),
     );

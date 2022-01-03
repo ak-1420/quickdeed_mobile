@@ -7,7 +7,7 @@ class Users {
   int mobile = 1;
   double rating = 0.0;
   String location = "";
-
+  List<String> Connections= ["a","a"];
 
   Users(
       {this.userId = "",
@@ -15,6 +15,7 @@ class Users {
       this.email = "",
       this.rating = 0.0,
       this.location = "",
-      this.mobile = 969}
+      this.mobile = 969
+      }
     );
 }
