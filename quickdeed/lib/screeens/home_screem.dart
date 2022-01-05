@@ -39,13 +39,13 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.pushNamed(context, '/home');
           break;
         case 1:
-          Navigator.pushNamed(context, '/myProfile');
+          Navigator.pushNamed(context, '/viewUser');
           break;
         case 2:
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/postWork');
           break;
         case 3:
-          Navigator.pushNamed(context, '/connections');
+          Navigator.pushNamed(context, '/connect');
           break;
         case 4:
           Navigator.pushNamed(context, '/home');
@@ -58,12 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
           title: _isSearch
               ? TextField(
                   decoration: InputDecoration(
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
                     hintText: (viewUsers) ? "Search Users" : "Search Works",
                   ),
                 )
-              : Text("QuickDeed"),
-          backgroundColor: Color.fromRGBO(184, 183, 255, 1),
+              : const Text("QuickDeed"),
+          backgroundColor: const Color.fromRGBO(184, 183, 255, 1),
           actions: [
             IconButton(
               onPressed: () {
@@ -97,12 +97,12 @@ class _HomeScreenState extends State<HomeScreen> {
                  children: [
                    SizedBox(width: 10.w,),
                    Text("you are currently viewing ${(viewUsers) ? 'users' : 'works'}",
-                    style: TextStyle(
+                    style:  TextStyle(
                       color: Colors.white,
-                      fontSize: 16.0
+                      fontSize: 16.sp
                     ),
                    ),
-                   Spacer(),
+                   const Spacer(),
                    Switch(
                        inactiveThumbColor: Colors.white,
                        inactiveTrackColor: Colors.black,

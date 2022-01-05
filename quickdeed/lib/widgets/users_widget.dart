@@ -64,11 +64,12 @@ class UsersList extends StatelessWidget {
               height: 30.h,
               child: RatingBar.builder(
                 initialRating: users[index].rating,
+                ignoreGestures: true,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
-                itemBuilder: (context, _) => Icon(
+                itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
                   size: 2,

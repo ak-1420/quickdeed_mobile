@@ -15,8 +15,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     Users(userId: "1", userName: "Hema", rating: 4.4, location: "4.4km away"),
     Users(userId: "1", userName: "Arun", rating: 4.4, location: "7km away"),
     Users(userId: "1", userName: "Rose", rating: 4.4, location: "9.4km away"),
-    Users(
-        userId: "1", userName: "Gayatri", rating: 4.4, location: "4.4km away"),
+    Users(userId: "1", userName: "Gayatri", rating: 4.4, location: "4.4km away"),
   ];
   int tabNumber = 0;
   bool isVisible = false;
@@ -59,7 +58,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                       Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(users.userName),
                               Text(users.location),
@@ -75,6 +74,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                   initialRating: users.rating,
                                   minRating: 1,
                                   direction: Axis.horizontal,
+                                  ignoreGestures: true,
                                   allowHalfRating: true,
                                   itemCount: 5,
                                   updateOnDrag: false,
@@ -95,7 +95,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           Row(
                             children: [
                               Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: RaisedButton(
                                   child: Text(
                                     "Cancel",

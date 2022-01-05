@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickdeed/screeens/connect.dart';
 import 'package:quickdeed/screeens/profile_screen.dart';
 import 'package:quickdeed/screeens/send_otp_screen.dart';
 import 'package:quickdeed/screeens/sign_up_screen_one.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        initialRoute: '/home',
+        initialRoute: '/',
         routes: {
           '/': (context) => SplashScreen(),
           '/sendOtp': (context) => SendOtpScreen(),
@@ -48,8 +49,8 @@ class MyApp extends StatelessWidget {
           '/home': (context) => HomeScreen(),
           '/viewUser':(context) => UserDetailsScreen(),
           '/viewWork':(context) => WorkDetailsScreen(),
-          '/connections':(context) => const ConnectionScreen(),
           '/myProfile': (context)=> const MyProfileScreen(),
+          '/connect': (context) => const Connect(),
         },
       ),
     );
