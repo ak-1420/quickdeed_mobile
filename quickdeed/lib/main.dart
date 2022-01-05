@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        initialRoute: '/',
+        initialRoute: '/home',
         routes: {
           '/': (context) => SplashScreen(),
           '/sendOtp': (context) => SendOtpScreen(),
@@ -46,10 +46,10 @@ class MyApp extends StatelessWidget {
           '/signUpOne': (context) => SignUpScreenOne(),
           '/postWork': (context) => PostWorkScreen(),
           '/home': (context) => HomeScreen(),
-          '/viewUser':(context) => User_Details_Screen(),
-          '/viewWork':(context) => Work_Details_Screen(),
-          '/connections':(context) => Connections_Screen(),
-          '/myProfile': (context)=> MyProfile_Screen(),
+          '/viewUser':(context) => UserDetailsScreen(),
+          '/viewWork':(context) => WorkDetailsScreen(),
+          '/connections':(context) => const ConnectionScreen(),
+          '/myProfile': (context)=> const MyProfileScreen(),
         },
       ),
     );

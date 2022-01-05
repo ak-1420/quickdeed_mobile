@@ -7,14 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class Work_Details_Screen extends StatefulWidget {
-  Work_Details_Screen({Key? key}) : super(key: key);
+class WorkDetailsScreen extends StatefulWidget {
+  WorkDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  _Work_Details_Screen createState() => _Work_Details_Screen();
+  _WorkDetailsScreen createState() => _WorkDetailsScreen();
 }
 
-class _Work_Details_Screen extends State<Work_Details_Screen> {
+class _WorkDetailsScreen extends State<WorkDetailsScreen> {
   Widget getCard(
       {required String title, required String value, required String imgPath}) {
     return Container(

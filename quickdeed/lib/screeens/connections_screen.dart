@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:quickdeed/Models/users_model.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class Connections_Screen extends StatefulWidget {
-  const Connections_Screen({Key? key}) : super(key: key);
+class ConnectionScreen extends StatefulWidget {
+  const ConnectionScreen({Key? key}) : super(key: key);
 
   @override
-  _Connections_ScreenState createState() => _Connections_ScreenState();
+  _ConnectionScreenState createState() => _ConnectionScreenState();
 }
 
-class _Connections_ScreenState extends State<Connections_Screen> {
+class _ConnectionScreenState extends State<ConnectionScreen> {
   final List<Users> users = [
     Users(userId: "1", userName: "Hema", rating: 4.4, location: "4.4km away"),
     Users(userId: "1", userName: "Arun", rating: 4.4, location: "7km away"),
@@ -50,10 +50,9 @@ class _Connections_ScreenState extends State<Connections_Screen> {
                     children: [
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: CircleAvatar(
+                        child: const CircleAvatar(
                           backgroundImage:
                               ExactAssetImage('images/user.jpeg', scale: 1.0),
-              
                           radius: 29,
                         ),
                       ),
@@ -70,7 +69,6 @@ class _Connections_ScreenState extends State<Connections_Screen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                                
                                 width: 250,
                                 height: 50,
                                 child: RatingBar.builder(
@@ -82,13 +80,13 @@ class _Connections_ScreenState extends State<Connections_Screen> {
                                   updateOnDrag: false,
                                   tapOnlyMode: true,
                                   // itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                  itemBuilder: (context, _) => Icon(
+                                  itemBuilder: (context, _) => const Icon(
                                     Icons.star,
                                     color: Colors.amber,
                                     // size: 0.2,
                                   ),
                                   onRatingUpdate: (rating) {
-                                  
+
                                   },
                                 ),
                               ),
@@ -153,7 +151,7 @@ class _Connections_ScreenState extends State<Connections_Screen> {
               Tab(
                   text: "Connections",
                   icon: Image.asset(
-                    "images/con.jpg",
+                    "images/connec.jpg",
                     height: 30.0,
                   )),
               Tab(text: "Invitations", icon: Icon(Icons.directions_transit)),

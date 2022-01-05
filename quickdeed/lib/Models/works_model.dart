@@ -5,7 +5,7 @@ class Works {
   String estimatedTime = "";
   double amount = 0.0;
   String location = "";
-  DateTime? createdTime = DateTime.now();
+  String createdTime = "";
   String userName = "";
   String workType = "";
   Works(
@@ -15,5 +15,5 @@ class Works {
       this.estimatedTime = "",
       this.amount = 0.0,
       this.location = "",
-      this.createdTime});
+      this.createdTime = ""});
 }
