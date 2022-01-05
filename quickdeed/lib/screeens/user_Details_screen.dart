@@ -24,7 +24,7 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10.0),
             child: CircleAvatar(
-              backgroundImage: ExactAssetImage('images/user.jpeg', scale: 1.0),
+              backgroundImage: ExactAssetImage(imgPath, scale: 1.0),
               // backgroundColor: const Color.fromRGBO(229, 229, 229, 1),
               radius: 20.r,
             ),
@@ -105,7 +105,7 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
                   getCard(
                       title: "Skill 1",
                       value: "Repairs",
-                      imgPath: 'images/user.jpeg'),
+                      imgPath: 'images/skill.jpg'),
                   Divider(
                     color: Colors.black,
                     indent: 75.0,
@@ -115,7 +115,7 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
                   getCard(
                       title: "Skill 2",
                       value: "PLumber",
-                      imgPath: 'images/user.jpeg'),
+                      imgPath: 'images/skill.jpg'),
                   Container(
                     child: Text(
                       "Rated",

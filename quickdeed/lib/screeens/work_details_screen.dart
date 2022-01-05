@@ -23,7 +23,7 @@ class _WorkDetailsScreen extends State<WorkDetailsScreen> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10.0),
             child: CircleAvatar(
-              backgroundImage: ExactAssetImage('images/user.jpeg', scale: 1.0),
+              backgroundImage: ExactAssetImage(imgPath, scale: 1.0),
               // backgroundColor: const Color.fromRGBO(229, 229, 229, 1),
               radius: 20.r,
             ),
@@ -103,7 +103,7 @@ class _WorkDetailsScreen extends State<WorkDetailsScreen> {
                     getCard(
                         title: "Work Name :",
                         value: "Delivery",
-                        imgPath: 'images/user.jpeg'),
+                        imgPath: 'images/work.jpeg'),
                     Divider(
                       color: Colors.black,
                       indent: 75.0,
@@ -123,7 +123,7 @@ class _WorkDetailsScreen extends State<WorkDetailsScreen> {
                     getCard(
                         title: "Estimated Time:",
                         value: "5h",
-                        imgPath: 'images/user.jpeg'),
+                        imgPath: 'images/time.jpeg'),
                     Divider(
                       color: Colors.black,
                       indent: 75.0,
@@ -133,7 +133,7 @@ class _WorkDetailsScreen extends State<WorkDetailsScreen> {
                     getCard(
                         title: "Amount:",
                         value: "300.0",
-                        imgPath: 'images/user.jpeg'),
+                        imgPath: 'images/salary.jpg'),
                     Divider(
                       color: Colors.black,
                       indent: 75.0,
@@ -144,7 +144,7 @@ class _WorkDetailsScreen extends State<WorkDetailsScreen> {
                         title: "Description:",
                         value:
                             "Luggage Delivery from secunderabad to kukatpally",
-                        imgPath: 'images/user.jpeg'),
+                        imgPath: 'images/description.jpeg'),
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
                       child: ClipRRect(
