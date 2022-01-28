@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   #flutter screen util for responsive screens in every device
-  flutter_screenutil: ^5.0.1
+  flutter_screenutil: ^5.1.1
 
   # material design icons
   material_design_icons_flutter: ^5.0.6595
@@ -46,6 +46,9 @@ dependencies:
 
   #image picker
   image_picker: ^0.8.4+4
+
+  #percentage progress indicator
+  percent_indicator: ^4.0.0
 
   flutter_rating_bar: ^4.0.0
   sticky_footer_scrollview: ^1.1.0

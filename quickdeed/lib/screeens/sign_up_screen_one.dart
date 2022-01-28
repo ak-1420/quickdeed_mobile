@@ -168,7 +168,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
               SizedBox(
                 width: 320.w,
                 child: TextField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.name,
                   controller: nameController,
                   onChanged: (name) {
                     print(name);
@@ -208,11 +208,11 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
 
               SizedBox(height: 20.h,),
 
-              // username textbox
+              // email textbox
               SizedBox(
                 width: 320.w,
                 child: TextField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.emailAddress,
                   controller: emailController,
                   onChanged: (email) {
                     print(email);

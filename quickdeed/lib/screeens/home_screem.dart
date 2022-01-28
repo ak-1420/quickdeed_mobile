@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.pushNamed(context, '/home');
           break;
         case 1:
-          Navigator.pushNamed(context, '/viewUser');
+          Navigator.pushNamed(context, '/myProfile');
           break;
         case 2:
           Navigator.pushNamed(context, '/postWork');
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.pushNamed(context, '/connect');
           break;
         case 4:
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/userWorks');
           break;
       }
     }
@@ -143,8 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Color.fromRGBO(184, 183, 255, 1),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.perm_device_information),
-              label: 'About',
+              icon: Icon(Icons.work_outline),
+              label: 'Your Works',
               backgroundColor: Color.fromRGBO(184, 183, 255, 1),
             ),
           ],

@@ -31,7 +31,7 @@ class _PostWorkScreenState extends State<PostWorkScreen> {
           // width: 320.w,
           // height: height.h,
           child: TextField(
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.name,
             controller: nameController,
             onChanged: (name) {
               print(name);

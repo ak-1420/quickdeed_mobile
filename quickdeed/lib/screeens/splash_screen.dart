@@ -11,8 +11,6 @@ class SplashScreen extends StatefulWidget {
 
    SplashScreen({Key? key}) : super(key: key);
 
-
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -23,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
 
     // get the device height and width
-
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -85,8 +82,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
     );
-
-
 
   } // end of build method
 

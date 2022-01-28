@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class RateWorker extends StatefulWidget {
-  const RateWorker({Key? key}) : super(key: key);
+class TrackScreen extends StatefulWidget {
+  const TrackScreen({Key? key}) : super(key: key);
 
   @override
-  _RateWorkerState createState() => _RateWorkerState();
+  _TrackScreenState createState() => _TrackScreenState();
 }
 
-class _RateWorkerState extends State<RateWorker> {
+class _TrackScreenState extends State<TrackScreen> {
 
-  final reviewController = TextEditingController();
+  final workStatusController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _RateWorkerState extends State<RateWorker> {
           },
         ),
         backgroundColor: Colors.black87,
-        title: Text("Rate the worker",
+        title: Text("Track the work",
           style: GoogleFonts.pacifico(
               fontSize: 20.sp,
               fontWeight: FontWeight.w400,
@@ -51,35 +51,87 @@ class _RateWorkerState extends State<RateWorker> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 60.r,
-                ),
+                // show the progress
                 SizedBox(height: 20.h,),
-                SizedBox(
-                  width: 200.w,
-                  height: 50.h,
-                  child: RatingBar.builder(
-                    initialRating: 1,
-                    unratedColor: Colors.white,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {},
-                  ),
+                CircularPercentIndicator(
+                  radius: 90.r,
+                  animation: true,
+                  animationDuration: 5000,
+                  lineWidth: 10.0,
+                  percent: 1.0,
+                  circularStrokeCap: CircularStrokeCap.butt,
+                  backgroundColor: Colors.white,
+                  progressColor: Colors.green,
+                  center: Text("100%" , style: GoogleFonts.roboto(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600
+                  ),),
                 ),
+                SizedBox(height: 40.h,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.r),
+                      child: SizedBox(
+                        width: 145.w,
+                        height: 44.h,
+                        child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(19, 18, 18, 1)),
+                              foregroundColor: MaterialStateProperty.all(Colors.white),
+
+                            ),
+                            onPressed: () {
+                              // TODO: show a toast of success
+                              ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+                                content: Text("pay amount through online"),
+                              ));
+                            },
+                            child: Text("pay online",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 20.sp,
+                              ),)
+                        ),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.r),
+                      child: SizedBox(
+                        width: 145.w,
+                        height: 44.h,
+                        child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(19, 18, 18, 1)),
+                              foregroundColor: MaterialStateProperty.all(Colors.white),
+
+                            ),
+                            onPressed: () {
+                              // TODO: show a toast of success
+                              ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+                                content: Text("connecting ..."),
+                              ));
+                            },
+                            child: Text("video call",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 20.sp,
+                              ),)
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40.h,),
                 SizedBox(
                   width: 320.w,
                   child: TextField(
                     keyboardType: TextInputType.multiline,
-                    controller: reviewController,
+                    controller: workStatusController,
                     maxLines: null,
-                    onChanged: (review) {
-                      print(review);
+                    onChanged: (workStatus) {
+                      print(workStatus);
                     },
                     style:TextStyle(
                       fontSize: 16.sp,
@@ -103,7 +155,7 @@ class _RateWorkerState extends State<RateWorker> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: "write your review ",
+                      hintText: "update the work status",
                       contentPadding: EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
                       hintStyle: GoogleFonts.rubik(
                           fontSize: 18.sp,
@@ -113,7 +165,7 @@ class _RateWorkerState extends State<RateWorker> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.h,),
+                SizedBox(height: 40.h,),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20.r),
                   child: SizedBox(
@@ -126,9 +178,9 @@ class _RateWorkerState extends State<RateWorker> {
 
                         ),
                         onPressed: () {
-                          // TODO: show a toast like feedback saved successfully
+                          // TODO: show a toast of success
                           ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
-                            content: Text("your review recorded successfully!"),
+                            content: Text("work status updated successfully!"),
                           ));
                         },
                         child: Text("submit",
