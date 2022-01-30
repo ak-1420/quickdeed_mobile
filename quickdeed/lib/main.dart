@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quickdeed/screeens/connect.dart';
-import 'package:quickdeed/screeens/profile_screen.dart';
-import 'package:quickdeed/screeens/rate_worker.dart';
-import 'package:quickdeed/screeens/send_otp_screen.dart';
-import 'package:quickdeed/screeens/sign_up_screen_one.dart';
-import 'package:quickdeed/screeens/splash_screen.dart';
-import 'package:quickdeed/screeens/track_screen.dart';
-import 'package:quickdeed/screeens/user_Details_screen.dart';
-import 'package:quickdeed/screeens/user_works.dart';
-import 'package:quickdeed/screeens/verify_otp_screen.dart';
-import 'package:quickdeed/screeens/post_Work.dart';
-import 'package:quickdeed/screeens/home_screem.dart';
-import 'package:quickdeed/screeens/work_details_screen.dart';
-
+import 'package:quickdeed/screens/connect.dart';
+import 'package:quickdeed/screens/profile_screen.dart';
+import 'package:quickdeed/screens/rate_worker.dart';
+import 'package:quickdeed/screens/send_otp_screen.dart';
+import 'package:quickdeed/screens/sign_up_screen_one.dart';
+import 'package:quickdeed/screens/splash_screen.dart';
+import 'package:quickdeed/screens/track_screen.dart';
+import 'package:quickdeed/screens/user_Details_screen.dart';
+import 'package:quickdeed/screens/user_works.dart';
+import 'package:quickdeed/screens/verify_otp_screen.dart';
+import 'package:quickdeed/screens/post_Work.dart';
+import 'package:quickdeed/screens/home_screem.dart';
+import 'package:quickdeed/screens/work_details_screen.dart';
+import 'package:quickdeed/screens/chatPage.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
             '/userWorks' : (context) => const UserWorks(),
             '/rateWorker' : (context) => const RateWorker(),
             '/track': (context) => const TrackScreen(),
+            '/chat':(context) => const ChatPage(),
           },
         )
     );

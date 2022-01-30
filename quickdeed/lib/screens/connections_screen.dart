@@ -15,7 +15,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     Users(userId: "1", userName: "Hema", rating: 4.4, location: "4.4km away"),
     Users(userId: "1", userName: "Arun", rating: 4.4, location: "7km away"),
     Users(userId: "1", userName: "Rose", rating: 4.4, location: "9.4km away"),
-    Users(userId: "1", userName: "Gayatri", rating: 4.4, location: "4.4km away"),
+    Users(
+        userId: "1", userName: "Gayatri", rating: 4.4, location: "4.4km away"),
   ];
   int tabNumber = 0;
   bool isVisible = false;
@@ -85,9 +86,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                     color: Colors.amber,
                                     // size: 0.2,
                                   ),
-                                  onRatingUpdate: (rating) {
-
-                                  },
+                                  onRatingUpdate: (rating) {},
                                 ),
                               ),
                             ],
@@ -95,7 +94,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           Row(
                             children: [
                               Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: RaisedButton(
                                   child: Text(
                                     "Cancel",
@@ -116,7 +116,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                   style: TextStyle(fontSize: 15),
                                 ),
                                 onPressed: () {
-                                  //navigate to chat screen
+                                  Navigator.pushNamed(context,'/chat');
                                 },
                                 color: Colors.purple,
                                 textColor: Colors.white,

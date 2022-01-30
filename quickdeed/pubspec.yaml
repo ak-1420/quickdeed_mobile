@@ -52,6 +52,7 @@ dependencies:
 
   flutter_rating_bar: ^4.0.0
   sticky_footer_scrollview: ^1.1.0
+  intl: ^0.17.0
 
 
 

@@ -1,12 +1,13 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/Models/users_model.dart';
 
-
 class InvitedUsers extends StatelessWidget {
-   InvitedUsers({Key? key}) : super(key: key);
+  InvitedUsers({Key? key}) : super(key: key);
 
   final List<Users> users = [
     Users(userId: "1", userName: "Hema", rating: 4, location: "4.4km away"),
@@ -23,12 +24,13 @@ class InvitedUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: users.length,
-        itemBuilder: (BuildContext context , int index){
+        itemBuilder: (BuildContext context, int index) {
           return Card(
             elevation: 10.0,
             child: InkWell(
-              onTap: (){
+              onTap: () {
                 // TODO: navigate user to chat screen
+                Navigator.pushNamed(context, '/chat');
               },
               child: Container(
                 margin: const EdgeInsets.all(5.0),
@@ -48,19 +50,19 @@ class InvitedUsers extends StatelessWidget {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(users[index].userName,
+                        Text(
+                          users[index].userName,
                           style: GoogleFonts.pacifico(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black87
-                          ),
+                              color: Colors.black87),
                         ),
-                        Text(users[index].location,
+                        Text(
+                          users[index].location,
                           style: GoogleFonts.roboto(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black87
-                          ),
+                              color: Colors.black87),
                         )
                       ],
                     ),
@@ -92,14 +94,15 @@ class InvitedUsers extends StatelessWidget {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.red[400]
+                                  primary: Colors.red[400]),
+                              child: Text(
+                                "Cancel",
+                                style: GoogleFonts.roboto(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white),
                               ),
-                              child: Text("Cancel" , style: GoogleFonts.roboto(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white
-                              ),),
-                              onPressed: (){},
+                              onPressed: () {},
                             )
                           ],
                         )
@@ -110,7 +113,6 @@ class InvitedUsers extends StatelessWidget {
               ),
             ),
           );
-        }
-    );
+        });
   }
 }

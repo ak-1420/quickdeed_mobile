@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/Models/users_model.dart';
 
 class ConnectedUsers extends StatelessWidget {
-   ConnectedUsers({Key? key}) : super(key: key);
+  ConnectedUsers({Key? key}) : super(key: key);
 
   final List<Users> users = [
     Users(userId: "1", userName: "Hema", rating: 4, location: "4.4km away"),
@@ -22,12 +22,13 @@ class ConnectedUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: users.length,
-        itemBuilder: (BuildContext context , int index){
+        itemBuilder: (BuildContext context, int index) {
           return Card(
             elevation: 10.0,
             child: InkWell(
-              onTap: (){
-               // TODO: navigate user to chat screen
+              onTap: () {
+                // TODO: navigate user to chat screen
+                // Navigator.pushNamed(context, '/chat');
               },
               child: Container(
                 margin: const EdgeInsets.all(5.0),
@@ -47,19 +48,19 @@ class ConnectedUsers extends StatelessWidget {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(users[index].userName,
+                        Text(
+                          users[index].userName,
                           style: GoogleFonts.pacifico(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black87
-                          ),
+                              color: Colors.black87),
                         ),
-                        Text(users[index].location,
+                        Text(
+                          users[index].location,
                           style: GoogleFonts.roboto(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black87
-                          ),
+                              color: Colors.black87),
                         )
                       ],
                     ),
@@ -90,12 +91,16 @@ class ConnectedUsers extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             ElevatedButton(
-                                child: Text("Chat" , style: GoogleFonts.roboto(
+                              child: Text(
+                                "Chat",
+                                style: GoogleFonts.roboto(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.white
-                                ),),
-                              onPressed: (){},
+                                    color: Colors.white),
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/chat');
+                              },
                             )
                           ],
                         )
@@ -106,7 +111,6 @@ class ConnectedUsers extends StatelessWidget {
               ),
             ),
           );
-        }
-    );
+        });
   }
 }
