@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:quickdeed/screens/chatPage.dart';
+import 'package:quickdeed/screens/chat_page.dart';
 
 class ConversationPageList extends StatefulWidget {
 

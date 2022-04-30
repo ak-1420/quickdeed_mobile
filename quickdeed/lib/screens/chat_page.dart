@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quickdeed/widgets/chatAppBar.dart';
-import 'package:quickdeed/widgets/chatItemWidget.dart';
-import 'package:quickdeed/widgets/chatListWidget.dart';
-import 'package:quickdeed/widgets/inputWidget.dart';
+import 'package:quickdeed/widgets/chat_app_bar.dart';
+import 'package:quickdeed/widgets/chat_list_widget.dart';
+import 'package:quickdeed/widgets/input_widget.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);

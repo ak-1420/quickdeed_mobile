@@ -9,13 +9,13 @@ import 'package:quickdeed/screens/send_otp_screen.dart';
 import 'package:quickdeed/screens/sign_up_screen_one.dart';
 import 'package:quickdeed/screens/splash_screen.dart';
 import 'package:quickdeed/screens/track_screen.dart';
-import 'package:quickdeed/screens/user_Details_screen.dart';
+import 'package:quickdeed/screens/user_details_screen.dart';
 import 'package:quickdeed/screens/user_works.dart';
 import 'package:quickdeed/screens/verify_otp_screen.dart';
-import 'package:quickdeed/screens/post_Work.dart';
-import 'package:quickdeed/screens/home_screem.dart';
+import 'package:quickdeed/screens/post_work.dart';
+import 'package:quickdeed/screens/home_screen.dart';
 import 'package:quickdeed/screens/work_details_screen.dart';
-import 'package:quickdeed/screens/chatPage.dart';
+import 'package:quickdeed/screens/chat_page.dart';
 void main() {
   runApp(const MyApp());
 }

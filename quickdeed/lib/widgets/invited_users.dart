@@ -29,8 +29,7 @@ class InvitedUsers extends StatelessWidget {
             elevation: 10.0,
             child: InkWell(
               onTap: () {
-                // TODO: navigate user to chat screen
-                Navigator.pushNamed(context, '/chat');
+                //TODO: figure out what to do when user clicks on a user on invited users tab
               },
               child: Container(
                 margin: const EdgeInsets.all(5.0),
