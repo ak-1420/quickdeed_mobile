@@ -3,6 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:quickdeed/Models/current_user.dart';
+import 'package:quickdeed/api/user_services.dart';
+import 'package:quickdeed/arguments/verify_otp_screen_args.dart';
+
 
 class VerifyOtpScreen extends StatefulWidget {
 
@@ -14,16 +19,67 @@ class VerifyOtpScreen extends StatefulWidget {
 
 class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
-
+  bool showLoading = false;
   final otpNumberController = TextEditingController();
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  late Future<CurrentUser> futureUser;
+
+  void handleCurrentUser(CurrentUser cUser , context){
+    print('current user: $cUser');
+    String path = (cUser.userId.isEmpty) ? "/signUpOne" : "/home";
+    Navigator.pushNamedAndRemoveUntil(context, path, (route) => false);
+  }
+
+  void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) async {
+    setState(() {
+      showLoading = true;
+    });
+
+    try{
+      final authCredential = await _auth.signInWithCredential(phoneAuthCredential);
+
+      setState(() {
+        showLoading = false;
+      });
+
+      if(authCredential.user != null){
+        print('user logged in ${authCredential.user}');
+        String? mobileNumber = authCredential.user?.phoneNumber;
+        futureUser = getUserByMobile(mobileNumber);
+        futureUser.then((u) => handleCurrentUser(u, context),onError: (e) => print('error: $e'));
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        showLoading = false;
+      });
+
+      String errMsg = (e.message == null ? "error occured try again!" : e.message.toString());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:  Text(errMsg)
+          )
+      );
+    }
+  }
+
+  void handleVerifyOtp(String otp , String verificationId) async {
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: otp
+    );
+    signInWithPhoneAuthCredential(phoneAuthCredential);
+  }
 
 
 
   @override
   Widget build(BuildContext context) {
 
+   // get the verifcation id from args
 
+    final args = ModalRoute.of(context)!.settings.arguments as VerifyOtpArguments;
 
     final  width = MediaQuery.of(context).size.width;
     final  height = MediaQuery.of(context).size.height;
@@ -95,7 +151,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       ),
                     ),
                     SizedBox(height: 30.h,),
-                    Text( "+91 - 7660941707",
+                    Text( args.phoneNumber ,
                       style: GoogleFonts.rubik(
                           fontWeight: FontWeight.w700,
                           fontSize: 16.sp,
@@ -164,8 +220,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       ),
                       onPressed: () {
                         // TODO: Verify Otp entered by the user
-
-                        Navigator.pushNamed(context , '/signUpOne');
+                        handleVerifyOtp(otpNumberController.text, args.verificationId);
                       },
                       child: Text("Submit",
                         style: TextStyle(
@@ -204,12 +259,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
               SizedBox(height : 50.h),
 
-             const Center(
-                child: CircularProgressIndicator(
+              Center(
+                child: showLoading ? CircularProgressIndicator(
                   backgroundColor:  Colors.white,
                   valueColor: AlwaysStoppedAnimation(Colors.deepPurple),
                   strokeWidth: 5,
-                )
+                ) : null ,
               ),
 
               const Spacer(),

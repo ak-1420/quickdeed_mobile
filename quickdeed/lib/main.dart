@@ -16,7 +16,13 @@ import 'package:quickdeed/screens/post_work.dart';
 import 'package:quickdeed/screens/home_screen.dart';
 import 'package:quickdeed/screens/work_details_screen.dart';
 import 'package:quickdeed/screens/chat_page.dart';
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+
+
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

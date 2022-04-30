@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "183560089057",
+    "project_id": "quickdeed-1420",
+    "storage_bucket": "quickdeed-1420.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183560089057:android:937861158949d390d776a0",
+        "android_client_info": {
+          "package_name": "com.example.quickdeed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183560089057-15tid0vu7gf8e1m7r9fshj9e71mlapt1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quickdeed",
+            "certificate_hash": "6598c63930b5992c457df8e6d7c4c2b63176cf7d"
+          }
+        },
+        {
+          "client_id": "183560089057-o12pj997c1vfd6ka2uo14orl92f95h4n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq8rT84Ou-vZv_iTOlpPVIkKX6Z1iFmfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183560089057-o12pj997c1vfd6ka2uo14orl92f95h4n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
