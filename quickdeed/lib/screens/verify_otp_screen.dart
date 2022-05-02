@@ -260,7 +260,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
               SizedBox(height : 50.h),
 
               Center(
-                child: showLoading ? CircularProgressIndicator(
+                child: showLoading ? const CircularProgressIndicator(
                   backgroundColor:  Colors.white,
                   valueColor: AlwaysStoppedAnimation(Colors.deepPurple),
                   strokeWidth: 5,

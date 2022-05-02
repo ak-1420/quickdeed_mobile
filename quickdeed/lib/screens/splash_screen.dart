@@ -50,9 +50,12 @@ class _SplashScreenState extends State<SplashScreen> {
         print('user already logged in $user');
         String? mobileNumber = user.phoneNumber;
         futureUser = getUserByMobile(mobileNumber);
-        futureUser.then((dbUser) => handleCurrentUser(dbUser, context),
-          onError: (e) => print('error while fetching user by mobile: $e')
-        );
+        futureUser.then((dbUser) => handleCurrentUser(dbUser, context)
+        ).catchError((e) => {
+           ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                   content:  Text(e?.message['message'] ?? "Error")))
+        });
 
       }
       else{

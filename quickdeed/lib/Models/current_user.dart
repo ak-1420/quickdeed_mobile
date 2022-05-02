@@ -9,8 +9,8 @@ class LocationDTO{
   factory LocationDTO.fromJson(Map< String , dynamic > json){
     return LocationDTO(
       address: json['address'],
-      longitude: json['longitude'],
-      lattitude: json['lattitude']
+      longitude: num.parse(json['longitude']),
+      lattitude: num.parse(json['lattitude'])
     );
   }
 }
@@ -65,6 +65,7 @@ class CurrentUser
   final List<InvitationDTO> invitations;
   final String createdAt;
   final String updatedAt;
+  final String profilePic;
 
   CurrentUser({
     required this.userId,
@@ -79,22 +80,61 @@ class CurrentUser
     required this.invitations,
     required this.createdAt,
     required this.updatedAt,
+    required this.profilePic
   });
 
-  factory CurrentUser.fromJson(Map< String , dynamic> json){
+  factory CurrentUser.fromJson(Map< String , dynamic> respBody){
+    Map < String , dynamic >? json = respBody['data'];
+
+    // check if the json data is null or not
+
+    if(json == null){
+      return CurrentUser(
+          userId: '',
+          userName: '',
+          email: '',
+          mobile: 0,
+          skills: [],
+          rating: '',
+          location: [],
+          requests: [],
+          connections: [],
+          invitations: [],
+          createdAt: '',
+          updatedAt: '',
+          profilePic: ''
+      );
+    }
+
+    String userId = json['userId'];
+    String userName = json['userName'];
+    String email = json['email'];
+    String profilePic = json['profilePic'];
+    int mobile = json['mobile'];
+    String rating = json['rating'];
+    String createdAt = json['createdAt'];
+    String updatedAt = json['updatedAt'];
+    List<String> skills = json['skills'].cast<String>();
+    List<RequestDTO> requests = json['requests'].cast<RequestDTO>();
+    List<ConnectionDTO> connections = json['connections'].cast<ConnectionDTO>();
+    List<InvitationDTO> invitations = json['invitations'].cast<InvitationDTO>();
+    List<LocationDTO> location = json['location'].cast<LocationDTO>();
+
+
     return CurrentUser(
-        userId: json['userId'],
-        userName: json['userName'],
-        email: json['email'],
-        mobile: json['mobile'],
-        skills: json['skills'],
-        rating: json['rating'],
-        location: json['location'],
-        requests: json['requests'],
-        connections: json['connections'],
-        invitations: json['invitations'],
-        createdAt: json['createdAt'],
-        updatedAt: json['updatedAt']
+        userId: userId,
+        userName: userName,
+        email: email,
+        mobile: mobile,
+        rating: rating,
+        skills: skills,
+        location: location,
+        requests: requests,
+        connections: connections,
+        invitations: invitations,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        profilePic: profilePic
     );
   }
 

@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickdeed/Models/current_user.dart';
+import 'package:quickdeed/api/user_services.dart';
+import 'package:quickdeed/config/Assets.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({ Key? key }) : super(key: key);
@@ -11,8 +15,48 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
-  final String profilePicture = "https://instagram.fhyd11-2.fna.fbcdn.net/v/t51.2885-19/s320x320/124480382_821404835315782_2213267434541466715_n.jpg?_nc_ht=instagram.fhyd11-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=WxyqhagcuHoAX-NoC9i&edm=ABfd0MgBAAAA&ccb=7-4&oh=00_AT9Cz23x3C9IETgHwhoyS-LCZ9-guAL4upjTOoVUfoL2Mg&oe=61FB0289&_nc_sid=7bff83";
-  final String coverPicture = "https://media-exp1.licdn.com/dms/image/C4E03AQHPVmJBFmJlRw/profile-displayphoto-shrink_400_400/0/1634745198438?e=1647475200&v=beta&t=w5f0Y7msi65EJFg2UDqKrRQj39WvUgeulBdR9UGEt-k";
+
+  late Future<CurrentUser> profileUser;
+
+   String profilePicture = "https://picsum.photos/200";
+   String coverPicture = "https://picsum.photos/200";
+   String address = "Hyderabad , India";
+   String userName = "Your Name";
+   double rating = 0;
+   List<String> skills = [];
+
+
+
+ void setProfileUser(CurrentUser pUser , context){
+   setState(() {
+     profilePicture = (pUser.profilePic != "") ? pUser.profilePic : profilePicture;
+     coverPicture = (pUser.profilePic != "") ? pUser.profilePic : profilePicture;
+     rating = (pUser.rating != "") ? double.parse(pUser.rating) : 0;
+     skills = (pUser.skills.isNotEmpty) ? pUser.skills : [];
+     userName = (pUser.userName != "") ? pUser.userName : userName;
+
+   });
+ }
+
+
+  @override
+  void initState() {
+    super.initState();
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null){
+      String? mobileNumber = user.phoneNumber;
+      profileUser = getUserByMobile(mobileNumber);
+      profileUser.then((dbUser) => setProfileUser(dbUser, context)
+      ).catchError((e) => {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:  Text(e?.message['message'] ?? "Error")))
+      });
+    }
+    else{
+      Navigator.pushNamedAndRemoveUntil(context, '/sendOtp', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +84,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ),
             ),
             SizedBox(height: 80.h,),
-            Text("Arun Kumar Kalakuntla",
+            Text(userName,
               style: GoogleFonts.roboto(
                 fontSize: 25.sp,
                 color: Colors.blueGrey,
@@ -52,7 +96,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               height: 10.h,
             ),
             Text(
-              "Hyderabad, India"
+              address
               ,style: GoogleFonts.roboto(
                 fontSize: 18.sp,
                 color:Colors.black45,
@@ -67,7 +111,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               width: 200.w,
               height: 30.h,
               child: RatingBar.builder(
-                initialRating: 4, // add it dynamically
+                initialRating: rating, // add it dynamically
                 ignoreGestures: true,
                 minRating: 1,
                 direction: Axis.horizontal,

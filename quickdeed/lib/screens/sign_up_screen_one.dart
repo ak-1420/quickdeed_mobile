@@ -1,9 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path/path.dart';
+import 'package:quickdeed/Models/current_user.dart';
+import 'package:quickdeed/api/user_services.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 
 class SignUpScreenOne extends StatefulWidget {
@@ -16,12 +23,97 @@ class SignUpScreenOne extends StatefulWidget {
 
 class _SignUpScreenOneState extends State<SignUpScreenOne> {
 
+  bool showLoading = false;
+
   final nameController = TextEditingController();
 
   final emailController = TextEditingController();
 
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  late Future<CurrentUser> futureUser;
+
+  String profilePic = "";
 
   XFile? _profilePic;
+
+  void navigateUser(CurrentUser user , context){
+    String path = (user.userId.isEmpty) ? "/sendOtp" : "/home";
+    Navigator.pushNamedAndRemoveUntil(context, path, (route) => false);
+  }
+
+  Future<String> uploadFile(String uid , File? photo) async {
+    if(photo == null) return "";
+    const fileName = 'profile';
+    final destination = '$uid/$fileName';
+    try{
+      final ref = storage.ref(destination);
+      await ref.putFile(photo);
+     return await ref.getDownloadURL();
+    }
+    catch(e){
+      print('error uploading file');
+    }
+    return "";
+  }
+
+
+  void handleUserSignUp(context) async {
+    setState((){
+      showLoading = true;
+    });
+
+
+    // TODO: 1 upload _profilePic to firebase storage
+    // TODO: 2 get the url of the image
+
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null){
+      String? mbl = user.phoneNumber?.substring(3);
+      String userId = user.uid;
+      List<LocationDTO> locs = [];
+      List<RequestDTO> reqs = [];
+      List<String> skills = [];
+      List<ConnectionDTO> cons = [];
+      List<InvitationDTO> invs = [];
+      String email = emailController.text;
+      String uname = nameController.text;
+      String rating = "";
+      int mobile = int.parse(mbl ?? "0");
+      String? imageUrl = "";
+      File? file =  File(_profilePic!.path);
+      if(_profilePic != null){
+        imageUrl = await uploadFile(userId , file);
+      }
+      CurrentUser usr = CurrentUser(
+          userId: userId,
+          userName: uname,
+          email: email,
+          mobile: mobile,
+          skills: skills,
+          rating: rating,
+          location: locs,
+          requests: reqs,
+          connections: cons,
+          invitations: invs,
+          createdAt: '',
+          updatedAt: '',
+          profilePic: imageUrl
+      );
+
+      futureUser = registerUser(usr);
+
+      futureUser.then((dbUser) => navigateUser(dbUser , context)
+      ).catchError((e) => {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message))
+        )
+      });
+    }
+
+
+  }
 
   set _imageFile(XFile? value) {
     _profilePic = (value == null) ? null : value;
@@ -265,9 +357,8 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
 
                       ),
                       onPressed: () {
-                        // TODO: handle send otp to mobile  functionality
-
-                        Navigator.pushNamed(context , '/postWork');
+                        handleUserSignUp(context);
+                        //Navigator.pushNamed(context , '/postWork');
                       },
                       child: Text("Continue",
                         style: TextStyle(
@@ -276,6 +367,16 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                         ),)
                   ),
                 ),
+              ),
+
+              SizedBox(height : 50.h),
+
+              Center(
+                child: showLoading ? const CircularProgressIndicator(
+                  backgroundColor:  Colors.white,
+                  valueColor: AlwaysStoppedAnimation(Colors.deepPurple),
+                  strokeWidth: 5,
+                ) : null ,
               ),
 
 

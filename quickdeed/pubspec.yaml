@@ -47,6 +47,9 @@ dependencies:
   #image picker
   image_picker: ^0.8.4+4
 
+  #path for image
+  path: ^1.8.0
+
   #percentage progress indicator
   percent_indicator: ^4.0.0
 
@@ -55,6 +58,9 @@ dependencies:
 
   #firebase auth package
   firebase_auth: ^3.3.3
+
+  #firebase storage package
+  firebase_storage: ^10.2.14
 
   flutter_rating_bar: ^4.0.0
   sticky_footer_scrollview: ^1.1.0
