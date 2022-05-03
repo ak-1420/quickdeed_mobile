@@ -11,7 +11,8 @@ import 'package:path/path.dart';
 import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/api/user_services.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class SignUpScreenOne extends StatefulWidget {
 
@@ -30,6 +31,48 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
   final emailController = TextEditingController();
 
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+
+  // to get the user location
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<String> getAddressFromLatLng(Position pos) async {
+    List<Placemark> placemark = await placemarkFromCoordinates(pos.latitude, pos.longitude);
+    Placemark place = placemark[0];
+    return '${place.street}, ${place.subLocality},${place.locality},${place.postalCode}';
+  }
+
+  Future<LocationDTO> getUserLocation() async {
+
+    Position pos = await _determinePosition();
+    String addr = await getAddressFromLatLng(pos);
+    return
+      LocationDTO(address: addr ,
+        lattitude: pos.latitude,
+        longitude: pos.longitude
+    );
+  }
 
   FirebaseAuth _auth = FirebaseAuth.instance;
   late Future<CurrentUser> futureUser;
@@ -72,14 +115,15 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
     if(user != null){
       String? mbl = user.phoneNumber?.substring(3);
       String userId = user.uid;
-      List<LocationDTO> locs = [];
+      //TODO : get user location and add it below ot the LocationDTO object
+      LocationDTO loc = await getUserLocation();
       List<RequestDTO> reqs = [];
       List<String> skills = [];
       List<ConnectionDTO> cons = [];
       List<InvitationDTO> invs = [];
       String email = emailController.text;
       String uname = nameController.text;
-      String rating = "";
+      num rating = 0;
       int mobile = int.parse(mbl ?? "0");
       String? imageUrl = "";
       File? file =  File(_profilePic!.path);
@@ -93,7 +137,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
           mobile: mobile,
           skills: skills,
           rating: rating,
-          location: locs,
+          location: loc,
           requests: reqs,
           connections: cons,
           invitations: invs,
@@ -106,9 +150,22 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
 
       futureUser.then((dbUser) => navigateUser(dbUser , context)
       ).catchError((e) => {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message))
-        )
+      setState(() {
+      showLoading = false;
+      }),
+       if(e.runtimeType == Exception || e.runtimeType == String){
+          ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())
+           )
+          )
+         }
+       else if(e.runtimeType != TypeError)
+         {
+           ScaffoldMessenger.of(context).showSnackBar(
+               SnackBar(content: Text(e?.message['message'] ?? "Error")
+               )
+           )
+         }
       });
     }
 

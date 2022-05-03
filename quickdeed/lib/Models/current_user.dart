@@ -9,8 +9,8 @@ class LocationDTO{
   factory LocationDTO.fromJson(Map< String , dynamic > json){
     return LocationDTO(
       address: json['address'],
-      longitude: num.parse(json['longitude']),
-      lattitude: num.parse(json['lattitude'])
+      longitude: num.parse(json['longitude'].toString()),
+      lattitude: num.parse(json['lattitude'].toString())
     );
   }
 }
@@ -58,8 +58,8 @@ class CurrentUser
   final String email;
   final int mobile;
   final List<String> skills;
-  final String rating;
-  final List<LocationDTO> location;
+  final num rating;
+  final LocationDTO location;
   final List<RequestDTO> requests;
   final List<ConnectionDTO> connections;
   final List<InvitationDTO> invitations;
@@ -95,8 +95,8 @@ class CurrentUser
           email: '',
           mobile: 0,
           skills: [],
-          rating: '',
-          location: [],
+          rating: 0,
+          location: LocationDTO(address:"",lattitude: 0 , longitude: 0),
           requests: [],
           connections: [],
           invitations: [],
@@ -111,14 +111,14 @@ class CurrentUser
     String email = json['email'];
     String profilePic = json['profilePic'];
     int mobile = json['mobile'];
-    String rating = json['rating'];
+    num rating = json['rating'] ?? 0;
     String createdAt = json['createdAt'];
     String updatedAt = json['updatedAt'];
     List<String> skills = json['skills'].cast<String>();
     List<RequestDTO> requests = json['requests'].cast<RequestDTO>();
     List<ConnectionDTO> connections = json['connections'].cast<ConnectionDTO>();
     List<InvitationDTO> invitations = json['invitations'].cast<InvitationDTO>();
-    List<LocationDTO> location = json['location'].cast<LocationDTO>();
+    LocationDTO location = LocationDTO.fromJson(json['location']);
 
 
     return CurrentUser(

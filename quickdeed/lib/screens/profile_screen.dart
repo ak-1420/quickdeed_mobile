@@ -20,7 +20,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
    String profilePicture = "https://picsum.photos/200";
    String coverPicture = "https://picsum.photos/200";
-   String address = "Hyderabad , India";
+   String address = "";
    String userName = "Your Name";
    double rating = 0;
    List<String> skills = [];
@@ -31,9 +31,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
    setState(() {
      profilePicture = (pUser.profilePic != "") ? pUser.profilePic : profilePicture;
      coverPicture = (pUser.profilePic != "") ? pUser.profilePic : profilePicture;
-     rating = (pUser.rating != "") ? double.parse(pUser.rating) : 0;
+     rating = (pUser.rating != 0) ? double.parse(pUser.rating.toString()) : 0;
      skills = (pUser.skills.isNotEmpty) ? pUser.skills : [];
      userName = (pUser.userName != "") ? pUser.userName : userName;
+     address = (pUser.location.address != "") ? pUser.location.address : address;
 
    });
  }
@@ -97,11 +98,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             ),
             Text(
               address
-              ,style: GoogleFonts.roboto(
+              ,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.roboto(
                 fontSize: 18.sp,
                 color:Colors.black45,
                 letterSpacing: 2.0,
-                fontWeight: FontWeight.w300
+                fontWeight: FontWeight.w300,
             ),
             ),
             SizedBox(

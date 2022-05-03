@@ -67,17 +67,30 @@ Future<CurrentUser> registerUser(CurrentUser newUser) async {
       'connections': newUser.connections,
       'requests' : newUser.requests,
       'invitations': newUser.invitations,
-      'location': newUser.location,
+      'location': {
+        'longitude': newUser.location.longitude,
+        'lattitude': newUser.location.lattitude,
+        'address': newUser.location.address
+      },
       'profilePic' : newUser.profilePic
     };
 
+    print('req body before encoding : $data');
+
     // encode the Map to JSON
     var requestBody = json.encode(data);
+
+    print('req body after encoding $requestBody');
+
+
 
     final response = await http.post(Uri.parse('$userBaseUrl/signup'),
       headers: header,
       body: requestBody
     );
+
+    print('response status ${response.statusCode}');
+    print('reponse for register user : ${response.body}');
 
     if(response.statusCode == 201){
       return CurrentUser.fromJson(jsonDecode(response.body));
@@ -92,4 +105,36 @@ Future<CurrentUser> registerUser(CurrentUser newUser) async {
       {
         throw Exception('Failed to register new user');
       }
+}
+
+
+// method to fetch all the users
+Future<List<CurrentUser>> getAllUsers() async {
+   User? user = FirebaseAuth.instance.currentUser;
+   final token = await user?.getIdToken().then((val) => val);
+   final header = {
+     "authorization": 'Bearer $token'
+   };
+   final res = await http.get(Uri.parse(userBaseUrl),
+     headers: header
+   );
+   if(res.statusCode == 200){
+     var parsed = jsonDecode(res.body);
+     List<dynamic> data = parsed['data'];
+     bool status = parsed['status'];
+     String msg = parsed['msg'];
+     List<CurrentUser> list = [];
+     if(status == true && data.isNotEmpty){
+       list = data.map((v) => CurrentUser.fromJson(v)).toList();
+     }
+     print('usersList from getAll Users $list');
+     return list;
+   }
+   else if(res.statusCode == 401){
+     print('user is unauthorized to access the api: ${res.body} ');
+     throw Exception(jsonDecode(res.body));
+   }
+   else{
+     throw Exception('Failed to fetch all users');
+   }
 }

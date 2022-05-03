@@ -66,6 +66,10 @@ dependencies:
   sticky_footer_scrollview: ^1.1.0
   intl: ^0.17.0
 
+  #for location of the user
+  geolocator: ^8.2.0
+  geocoding: ^2.0.4
+
 
 
 dev_dependencies:

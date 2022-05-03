@@ -1,12 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/Models/users_model.dart';
+import 'package:quickdeed/api/user_services.dart';
 
-class UsersList extends StatelessWidget {
+class UsersList extends StatefulWidget {
 
-   UsersList({Key? key}) : super(key: key);
+   const UsersList({Key? key}) : super(key: key);
+
+  @override
+  State<UsersList> createState() => _UsersListState();
+}
+
+class _UsersListState extends State<UsersList> {
 
   final List<Users> users = [
     Users(userId: "1", userName: "Hema", rating: 4, location: "4.4km away"),
@@ -14,6 +23,23 @@ class UsersList extends StatelessWidget {
     Users(userId: "3", userName: "Rose", rating: 3, location: "4.4km away"),
     Users(userId: "4", userName: "Gayatri", rating: 2, location: "4.4km away"),
   ];
+
+  //TODO: fetch the users list here
+  List<CurrentUser> usersData = [];
+
+  @override
+  void initState() async {
+    super.initState();
+    User? u = FirebaseAuth.instance.currentUser;
+    if(u != null){
+      // get all the users from api
+      usersData = await getAllUsers();
+    }
+    else{
+      // user not logged in
+      Navigator.pushNamedAndRemoveUntil(context, '/sendOtp', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
