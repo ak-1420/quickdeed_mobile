@@ -122,12 +122,13 @@ Future<List<CurrentUser>> getAllUsers() async {
      var parsed = jsonDecode(res.body);
      List<dynamic> data = parsed['data'];
      bool status = parsed['status'];
-     String msg = parsed['msg'];
+     String msg = parsed['message'];
      List<CurrentUser> list = [];
      if(status == true && data.isNotEmpty){
-       list = data.map((v) => CurrentUser.fromJson(v)).toList();
+       print('data in true status : ${data.runtimeType}');
+       List<Map<String , dynamic >> jsons = data.map((d) => {'data' : d}).toList();
+       list = jsons.map((d) => CurrentUser.fromJson(d)).toList();
      }
-     print('usersList from getAll Users $list');
      return list;
    }
    else if(res.statusCode == 401){
@@ -137,4 +138,5 @@ Future<List<CurrentUser>> getAllUsers() async {
    else{
      throw Exception('Failed to fetch all users');
    }
+
 }
