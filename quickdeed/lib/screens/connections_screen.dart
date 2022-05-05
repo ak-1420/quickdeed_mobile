@@ -15,8 +15,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     Users(userId: "1", userName: "Hema", rating: 4.4, location: "4.4km away"),
     Users(userId: "1", userName: "Arun", rating: 4.4, location: "7km away"),
     Users(userId: "1", userName: "Rose", rating: 4.4, location: "9.4km away"),
-    Users(
-        userId: "1", userName: "Gayatri", rating: 4.4, location: "4.4km away"),
+    Users(userId: "1", userName: "Gayatri", rating: 4.4, location: "4.4km away"),
   ];
   int tabNumber = 0;
   bool isVisible = false;

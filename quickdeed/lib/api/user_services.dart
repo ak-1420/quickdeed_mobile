@@ -125,7 +125,6 @@ Future<List<CurrentUser>> getAllUsers() async {
      String msg = parsed['message'];
      List<CurrentUser> list = [];
      if(status == true && data.isNotEmpty){
-       print('data in true status : ${data.runtimeType}');
        List<Map<String , dynamic >> jsons = data.map((d) => {'data' : d}).toList();
        list = jsons.map((d) => CurrentUser.fromJson(d)).toList();
      }
@@ -139,4 +138,104 @@ Future<List<CurrentUser>> getAllUsers() async {
      throw Exception('Failed to fetch all users');
    }
 
+}
+
+// method to fetch user connections list
+Future<List<CurrentUser>> getUserConnections() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user?.uid ?? "";
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization": 'Bearer $token'
+  };
+  final res = await http.get(Uri.parse('$userBaseUrl/$uid/connections'),
+      headers: header
+  );
+  if(res.statusCode == 200){
+    var parsed = jsonDecode(res.body);
+    List<dynamic> data = parsed['data'];
+    bool status = parsed['status'];
+    String msg = parsed['message'];
+    List<CurrentUser> list = [];
+    if(status == true && data.isNotEmpty){
+      List<Map<String , dynamic >> jsons = data.map((d) => {'data' : d}).toList();
+      list = jsons.map((d) => CurrentUser.fromJson(d)).toList();
+    }
+    return list;
+  }
+  else if(res.statusCode == 401){
+    print('user is unauthorized to access the api: ${res.body} ');
+    throw Exception(jsonDecode(res.body));
+  }
+  else{
+    throw Exception('Failed to fetch user connections');
+  }
+
+
+}
+
+// method to fetch user requests list
+Future<List<CurrentUser>> getUserRequests() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user?.uid ?? "";
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization": 'Bearer $token'
+  };
+  final res = await http.get(Uri.parse('$userBaseUrl/$uid/requests'),
+      headers: header
+  );
+  if(res.statusCode == 200){
+    var parsed = jsonDecode(res.body);
+    List<dynamic> data = parsed['data'];
+    bool status = parsed['status'];
+    String msg = parsed['message'];
+    List<CurrentUser> list = [];
+    if(status == true && data.isNotEmpty){
+      List<Map<String , dynamic >> jsons = data.map((d) => {'data' : d}).toList();
+      list = jsons.map((d) => CurrentUser.fromJson(d)).toList();
+    }
+    return list;
+  }
+  else if(res.statusCode == 401){
+    print('user is unauthorized to access the api: ${res.body} ');
+    throw Exception(jsonDecode(res.body));
+  }
+  else{
+    throw Exception('Failed to fetch  user requests');
+  }
+
+
+}
+
+// method to fetch user invitation list
+Future<List<CurrentUser>> getUserInvitations() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user?.uid ?? "";
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization": 'Bearer $token'
+  };
+  final res = await http.get(Uri.parse('$userBaseUrl/$uid/invitations'),
+      headers: header
+  );
+  if(res.statusCode == 200){
+    var parsed = jsonDecode(res.body);
+    List<dynamic> data = parsed['data'];
+    bool status = parsed['status'];
+    String msg = parsed['message'];
+    List<CurrentUser> list = [];
+    if(status == true && data.isNotEmpty){
+      List<Map<String , dynamic >> jsons = data.map((d) => {'data' : d}).toList();
+      list = jsons.map((d) => CurrentUser.fromJson(d)).toList();
+    }
+    return list;
+  }
+  else if(res.statusCode == 401){
+    print('user is unauthorized to access the api: ${res.body} ');
+    throw Exception(jsonDecode(res.body));
+  }
+  else{
+    throw Exception('Failed to fetch  user invitations');
+  }
 }

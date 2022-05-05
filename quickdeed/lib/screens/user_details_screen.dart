@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:quickdeed/arguments/view_user_screen_arguments.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   UserDetailsScreen({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10.0),
             child: CircleAvatar(
-              backgroundImage: ExactAssetImage(imgPath, scale: 1.0),
+              backgroundImage: NetworkImage(imgPath, scale: 1.0),
               // backgroundColor: const Color.fromRGBO(229, 229, 229, 1),
               radius: 20.r,
             ),
@@ -36,8 +37,7 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5.0),
-                  child: Text(
-                    "${title}",
+                  child: Text(title,
                     style: TextStyle(fontSize: 18, color: Colors.grey),
                   ),
                 ),
@@ -63,6 +63,10 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    //get the user arg
+
+    final args = ModalRoute.of(context)!.settings.arguments as ViewUserArguments;
 
     return Scaffold(
       body: Container(
@@ -94,8 +98,8 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
                 children: [
                   getCard(
                       title: "User Name",
-                      value: "Raju",
-                      imgPath: 'images/user.jpeg'),
+                      value: args.user.userName,
+                      imgPath: args.user.profilePic),
                   Divider(
                     color: Colors.black,
                     indent: 75.0,
@@ -128,7 +132,7 @@ class _UserDetailsScreen extends State<UserDetailsScreen> {
                     width: 200,
                     height: 100,
                     child: RatingBar.builder(
-                      initialRating: 3.0,
+                      initialRating: double.parse(args.user.rating.toString()),
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,

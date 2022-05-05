@@ -1,28 +1,53 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/Models/users_model.dart';
+import 'package:quickdeed/api/user_services.dart';
 
-class RequestedUsers extends StatelessWidget {
+import '../Models/current_user.dart';
+
+class RequestedUsers extends StatefulWidget {
    RequestedUsers({Key? key}) : super(key: key);
 
-  final List<Users> users = [
-    Users(userId: "1", userName: "Hema", rating: 4, location: "4.4km away"),
-    Users(userId: "1", userName: "Arun", rating: 3, location: "7km away"),
-    Users(userId: "1", userName: "Rose", rating: 5, location: "9.4km away"),
-    Users(userId: "1", userName: "Gayatri", rating: 4, location: "4.4km away"),
-    Users(userId: "1", userName: "Hema", rating: 4, location: "4.4km away"),
-    Users(userId: "1", userName: "Arun", rating: 3, location: "7km away"),
-    Users(userId: "1", userName: "Rose", rating: 5, location: "9.4km away"),
-    Users(userId: "1", userName: "Gayatri", rating: 4, location: "4.4km away"),
-  ];
+  @override
+  State<RequestedUsers> createState() => _RequestedUsersState();
+}
+
+class _RequestedUsersState extends State<RequestedUsers> {
+
+
+  List<CurrentUser> usersData = [];
+
+  void handleUsersList(List<CurrentUser> users , context){
+    setState(() {
+      usersData = users;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    User? u = FirebaseAuth.instance.currentUser;
+    if(u != null){
+      getUserRequests().then((val) => handleUsersList(val, context));
+    }
+    else{
+      Navigator.pushNamedAndRemoveUntil(context, '/sendOtp', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if(usersData.isEmpty){
+      return const Center(child: Text('No Requests!'),);
+    }
+
     return ListView.builder(
-        itemCount: users.length,
+        itemCount: usersData.length,
         itemBuilder: (BuildContext context , int index){
           return Card(
             elevation: 10.0,
@@ -43,25 +68,26 @@ class RequestedUsers extends StatelessWidget {
                     leading: CircleAvatar(
                       radius: 25.r,
                       backgroundColor: Colors.grey[300],
-                      backgroundImage: const AssetImage('images/user.jpeg'),
+                      // backgroundImage: const AssetImage('images/user.jpeg'),
+                      backgroundImage: NetworkImage(usersData[index].profilePic),
                     ),
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(users[index].userName,
+                        Text(usersData[index].userName,
                           style: GoogleFonts.pacifico(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                               color: Colors.black87
                           ),
                         ),
-                        Text(users[index].location,
-                          style: GoogleFonts.roboto(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black87
-                          ),
-                        )
+                        // Text(usersData[index].location,
+                        //   style: GoogleFonts.roboto(
+                        //       fontSize: 12.sp,
+                        //       fontWeight: FontWeight.w400,
+                        //       color: Colors.black87
+                        //   ),
+                        // )
                       ],
                     ),
                     subtitle: Column(
@@ -72,7 +98,7 @@ class RequestedUsers extends StatelessWidget {
                           width: 200.w,
                           height: 50.h,
                           child: RatingBar.builder(
-                            initialRating: users[index].rating,
+                            initialRating: usersData[index].rating.toDouble(),
                             minRating: 1,
                             direction: Axis.horizontal,
                             ignoreGestures: true,

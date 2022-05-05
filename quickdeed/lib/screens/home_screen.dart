@@ -20,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final emailController = TextEditingController();
 
+  final searchController = TextEditingController();
+
   bool _isSearch = false ;
 
   bool viewUsers =  false;
@@ -57,7 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: _isSearch
               ? TextField(
-                  decoration: InputDecoration(
+                    keyboardType: TextInputType.name,
+                    controller: searchController,
+                    onChanged: (searchWord) {
+                            //TODO: filter works/users by search word
+                    },
+                    decoration: InputDecoration(
                     hintStyle: const TextStyle(color: Colors.white),
                     hintText: (viewUsers) ? "Search Users" : "Search Works",
                   ),
@@ -71,13 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   _isSearch = true;
                 });
               },
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
             ),
             IconButton(
               onPressed: () {
                 //handle for filtering
               },
-              icon: Icon(Icons.filter_alt),
+              icon: const Icon(Icons.filter_alt),
             ),
           ],
         ),
@@ -118,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  ],
                ),
               ),
-              viewUsers ? UsersList() : WorksList()
+              viewUsers ? const UsersList() : WorksList()
             ],
           ),
         ),
