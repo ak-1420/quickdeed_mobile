@@ -239,3 +239,201 @@ Future<List<CurrentUser>> getUserInvitations() async {
     throw Exception('Failed to fetch  user invitations');
   }
 }
+
+// method to invite / request a user to connect
+Future<Map<String , dynamic>> inviteUser(String userId , String workId) async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user?.uid ?? "";
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization" : 'Bearer $token',
+    "Content-Type": "application/json"
+  };
+
+  Map data = {
+    'userId': userId,
+    'workId': workId,
+  };
+
+  // encode the map to json
+  var reqBody = json.encode(data);
+  print('reqbody : $reqBody');
+  print('token $token');
+  print('uid : $uid');
+
+  final res = await http.post(Uri.parse('$userBaseUrl/$uid/invite-user'),
+    headers: header,
+    body: reqBody
+  );
+
+  print('response status ${res.statusCode}');
+  print('repsonse body ${res.body}');
+
+  Map<String , dynamic > apiRes = {};
+
+  if(res.statusCode == 200){
+    apiRes = jsonDecode(res.body);
+  }
+  else if(res.statusCode == 400){
+    apiRes = jsonDecode(res.body);
+  }
+  else {
+    apiRes = {
+      'status' : false ,
+      'message' : 'internal server error',
+      'data' : []
+    };
+  }
+
+  return apiRes;
+}
+
+
+//method to cancel the invite / request a user to connect
+// the user who sent the invite will cancel here
+Future<Map<String , dynamic>> cancelInvitation(String userId , String workId) async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user?.uid ?? "";
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization" : 'Bearer $token',
+    "Content-Type": "application/json"
+  };
+
+  Map data = {
+    'userId': userId,
+    'workId': workId,
+  };
+  // encode the map to json
+  var reqBody = json.encode(data);
+  final res = await http.post(Uri.parse('$userBaseUrl/$uid/cancel-invite'),
+      headers: header,
+      body: reqBody
+  );
+  print('response status ${res.statusCode}');
+  print('repsonse body ${res.body}');
+
+  Map<String , dynamic > apiRes = {};
+  if(res.statusCode == 200){
+    apiRes = jsonDecode(res.body);
+  }
+  else if(res.statusCode == 400){
+    apiRes = jsonDecode(res.body);
+  }
+  else {
+    apiRes = {
+      'status' : false ,
+      'message' : 'internal server error',
+      'data' : []
+    };
+  }
+
+  return apiRes;
+}
+
+
+// method to accept the invite / request to connect
+Future<Map<String , dynamic>> acceptRequest(String userId , String workId) async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user?.uid ?? "";
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization" : 'Bearer $token',
+    "Content-Type": "application/json"
+  };
+  Map data = {
+    'userId': userId,
+    'workId': workId,
+  };
+  // encode the map to json
+  var reqBody = json.encode(data);
+  final res = await http.post(Uri.parse('$userBaseUrl/$uid/accept-request'),
+      headers: header,
+      body: reqBody
+  );
+  print('response status ${res.statusCode}');
+  print('repsonse body ${res.body}');
+
+  Map<String , dynamic > apiRes = {};
+  if(res.statusCode == 200){
+    apiRes = jsonDecode(res.body);
+  }
+  else if(res.statusCode == 400){
+    apiRes = jsonDecode(res.body);
+  }
+  else {
+    apiRes = {
+      'status' : false ,
+      'message' : 'internal server error',
+      'data' : []
+    };
+  }
+
+  return apiRes;
+
+
+}
+
+// method to ignore the invite / request to connect
+Future<Map<String , dynamic>> ignoreRequest(String userId , String workId) async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user?.uid ?? "";
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization" : 'Bearer $token',
+    "Content-Type": "application/json"
+  };
+  Map data = {
+    'userId': userId,
+    'workId': workId,
+  };
+  // encode the map to json
+  var reqBody = json.encode(data);
+  final res = await http.post(Uri.parse('$userBaseUrl/$uid/ignore-request'),
+      headers: header,
+      body: reqBody
+  );
+  print('response status ${res.statusCode}');
+  print('repsonse body ${res.body}');
+
+  Map<String , dynamic > apiRes = {};
+  if(res.statusCode == 200){
+    apiRes = jsonDecode(res.body);
+  }
+  else if(res.statusCode == 400){
+    apiRes = jsonDecode(res.body);
+  }
+  else {
+    apiRes = {
+      'status' : false ,
+      'message' : 'internal server error',
+      'data' : []
+    };
+  }
+
+  return apiRes;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

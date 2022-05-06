@@ -63,175 +63,200 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(coverPicture),
-                  fit: BoxFit.cover
-                )
-              ),
-              child: Container(
-                width: double.infinity,
-                height: 200.h,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(coverPicture),
+                    fit: BoxFit.cover
+                  )
+                ),
                 child: Container(
-                  alignment:const Alignment(0.0,2.5),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(profilePicture),
-                    radius: 60.r,
+                  width: double.infinity,
+                  height: 200.h,
+                  child: Container(
+                    alignment:const Alignment(0.0,2.5),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(profilePicture),
+                      radius: 60.r,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 80.h,),
-            Text(userName,
-              style: GoogleFonts.roboto(
-                fontSize: 25.sp,
-                color: Colors.blueGrey,
-                letterSpacing: 1.0,
-                fontWeight: FontWeight.w400
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Text(
-              address
-              ,
-                textAlign: TextAlign.center,
+              SizedBox(height: 80.h,),
+              Text(userName,
                 style: GoogleFonts.roboto(
-                fontSize: 18.sp,
-                color:Colors.black45,
-                letterSpacing: 2.0,
-                fontWeight: FontWeight.w300,
-            ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            SizedBox(
-              width: 200.w,
-              height: 30.h,
-              child: RatingBar.builder(
-                initialRating: rating, // add it dynamically
-                ignoreGestures: true,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                  size: 2,
+                  fontSize: 25.sp,
+                  color: Colors.blueGrey,
+                  letterSpacing: 1.0,
+                  fontWeight: FontWeight.w400
                 ),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                },
               ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            const Card(
-                margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                elevation: 2.0,
-                child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12,horizontal: 30),
-                    child: Text("Skill Set",style: TextStyle(
-                        letterSpacing: 2.0,
-                        fontWeight: FontWeight.w300
-                    ),))
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children:[
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children:  [
-                        Card(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("flutter",
-                                style: GoogleFonts.roboto(),
-                              )
-                          ),
-                        ),
-                        Card(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("react js",
-                                style: GoogleFonts.roboto(),
-                              )
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children:  [
-                        Card(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Node js",
-                                style: GoogleFonts.roboto(),
-                              )
-                          ),
-                        ),
-                        Card(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("MERN stack",
-                                style: GoogleFonts.roboto(),
-                              )
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children:  [
-                        Card(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Problem Solving",
-                                style: GoogleFonts.roboto(),
-                              )
-                          ),
-                        ),
-                        Card(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Quick Learning",
-                                style: GoogleFonts.roboto(),
-                              )
-                          ),
-                        ),
-                      ],
-                    )
-                  ]
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                address
+                ,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.roboto(
+                  fontSize: 18.sp,
+                  color:Colors.black45,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.w300,
+              ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              SizedBox(
+                width: 200.w,
+                height: 30.h,
+                child: RatingBar.builder(
+                  initialRating: rating, // add it dynamically
+                  ignoreGestures: true,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                    size: 2,
+                  ),
+                  onRatingUpdate: (rating) {
+                    print(rating);
+                  },
                 ),
-              ],
-            )
-          ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              const Card(
+                  margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+                  elevation: 2.0,
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12,horizontal: 30),
+                      child: Text("Skills",style: TextStyle(
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w300
+                      ),))
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: renderSkills(skills)
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+
+List<Widget> renderSkills(List<String> skills){
+
+  List<Widget> ls = [];
+
+  ls = skills.map((skill) => (
+     Card(
+      margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),  
+      child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(skill,
+              style: GoogleFonts.roboto(),
+          )
+          ),
+         )
+      )
+    ).cast<Widget>().toList();
+
+  return ls;
+}
+
+// [
+// Row(
+// mainAxisSize: MainAxisSize.max,
+// mainAxisAlignment: MainAxisAlignment.start,
+// children:  [
+// Card(
+// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+// child: Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Text("flutter",
+// style: GoogleFonts.roboto(),
+// )
+// ),
+// ),
+// Card(
+// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+// child: Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Text("react js",
+// style: GoogleFonts.roboto(),
+// )
+// ),
+// ),
+// ],
+// ),
+// Row(
+// mainAxisSize: MainAxisSize.max,
+// mainAxisAlignment: MainAxisAlignment.start,
+// children:  [
+// Card(
+// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+// child: Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Text("Node js",
+// style: GoogleFonts.roboto(),
+// )
+// ),
+// ),
+// Card(
+// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+// child: Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Text("MERN stack",
+// style: GoogleFonts.roboto(),
+// )
+// ),
+// ),
+// ],
+// ),
+// Row(
+// mainAxisSize: MainAxisSize.max,
+// mainAxisAlignment: MainAxisAlignment.start,
+// children:  [
+// Card(
+// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+// child: Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Text("Problem Solving",
+// style: GoogleFonts.roboto(),
+// )
+// ),
+// ),
+// Card(
+// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+// child: Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Text("Quick Learning",
+// style: GoogleFonts.roboto(),
+// )
+// ),
+// ),
+// ],
+// )
+// ]

@@ -27,12 +27,27 @@ class _InvitedUsersState extends State<InvitedUsers> {
     });
   }
 
+  void cancelInvite(String userId , String workId , context){
+    cancelInvitation(userId, workId).then((val) => {
+      if(val['status'] == true){
+        getUserInvitations().then((val) => handleUsersList(val, context)),
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('invitation cancelled'))
+        ),
+      }
+    }).catchError((err)=>{
+      print('errror while cancelling invitation $err')
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     User? u = FirebaseAuth.instance.currentUser;
     if(u != null){
-      getUserInvitations().then((val) => handleUsersList(val, context));
+      {
+        getUserInvitations().then((val) => handleUsersList(val, context));
+      }
     }
     else{
       Navigator.pushNamedAndRemoveUntil(context, '/sendOtp', (route) => false);
@@ -125,7 +140,9 @@ class _InvitedUsersState extends State<InvitedUsers> {
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                cancelInvite(usersData[index].userId , "NA" , context);
+                              },
                             )
                           ],
                         )

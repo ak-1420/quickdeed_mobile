@@ -27,6 +27,32 @@ class _RequestedUsersState extends State<RequestedUsers> {
     });
   }
 
+  void accept(String userId , String workId , context){
+    acceptRequest(userId, workId).then((val) => {
+      if(val['status'] == true){
+        getUserRequests().then((val) => handleUsersList(val, context)),
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('added as your connection!'))
+        ),
+      }
+    }).catchError((err)=>{
+      print('error while accepting request $err')
+    });
+  }
+
+  void ignore(String userId , String workId , context){
+    ignoreRequest(userId, workId).then((val) =>{
+      if(val['status'] == true){
+        getUserRequests().then((val) => handleUsersList(val, context)),
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('request ignored!'))
+        ),
+      }
+    }).catchError((err)=>{
+      print('error while ignoring request $err')
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -125,7 +151,9 @@ class _RequestedUsersState extends State<RequestedUsers> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white
                               ),),
-                              onPressed: (){},
+                              onPressed: (){
+                                accept(usersData[index].userId, "NA", context);
+                              },
                             ),
                             SizedBox(width: 20.w,),
                             ElevatedButton(
@@ -137,7 +165,9 @@ class _RequestedUsersState extends State<RequestedUsers> {
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white
                               ),),
-                              onPressed: (){},
+                              onPressed: (){
+                                ignore(usersData[index].userId, "NA", context);
+                              },
                             )
                           ],
                         )

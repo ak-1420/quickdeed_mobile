@@ -54,7 +54,7 @@ class _UsersListState extends State<UsersList> {
     double e_lng = double.parse(eLng.toString());
     double distanceInMeters = Geolocator.distanceBetween(s_lat , s_lng , e_lat, e_lng);
     double distanceInKms =  distanceInMeters / 1000;
-    return distanceInKms.toString() + 'km away';
+    return distanceInKms.ceil().toString() + ' km away';
   }
 
   @override
@@ -147,9 +147,7 @@ class _UsersListState extends State<UsersList> {
                   ),
                 ),
                 SizedBox(height: 5.h,),
-                Row(
-                  children: showUserSkills(usersData[index].skills),
-                ),
+
               ],
             ),
           ),
@@ -163,11 +161,11 @@ class _UsersListState extends State<UsersList> {
 
 List<Widget> showUserSkills (List<String> skills){
    List<Widget> ls = [];
-   ls = skills.map((skill) => {
+   ls = skills.map((skill) => (
      Card(
        child: Padding(
        padding: const EdgeInsets.all(10.0),
-       child: Text("Skill 1",
+       child: Text(skill ,
                    style: GoogleFonts.roboto(
                    fontWeight: FontWeight.w500,
                    fontSize: 13.sp
@@ -177,6 +175,7 @@ List<Widget> showUserSkills (List<String> skills){
               elevation: 5,
              color: Colors.brown[200],
            )
-   }).cast<Widget>().toList();
+   )
+   ).cast<Widget>().toList();
    return ls;
 }
