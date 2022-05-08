@@ -2,12 +2,50 @@
 
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickdeed/Models/current_user.dart';
 
 
 const userBaseUrl = "https://user-service-xi.vercel.app/api/v1/users";
+
+
+
+Future<void> storeFcmToken(String? uid , String? jwtToken) async {
+    if(uid == null || jwtToken == null) return;
+
+    //get fcm token
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+    if(fcmToken == null) return;
+
+    // store this fcmToken in fcm tokens collection
+    final header = {
+      "authorization" : 'Bearer $jwtToken',
+      "Content-Type": "application/json"
+    };
+
+    Map data = {
+      'userId': uid,
+      'fcm_token' : fcmToken
+    };
+
+    var reqBody = json.encode(data);
+
+    final res = await http.post(Uri.parse('$userBaseUrl/fcm-token'),
+      headers: header,
+      body: reqBody
+    );
+
+    if(res.statusCode == 200){
+      debugPrint('fcm token stored successfully!');
+    }
+    else{
+      debugPrint('error storing fcm token : ${res.body}');
+    }
+    return;
+}
 
 Future<CurrentUser> getUserByMobile(String? mobileNumber) async {
   String mobile = (mobileNumber == null) ? "" : mobileNumber.toString();
@@ -19,7 +57,7 @@ Future<CurrentUser> getUserByMobile(String? mobileNumber) async {
   User? user =  FirebaseAuth.instance.currentUser;
   final token = await user?.getIdToken().then((val)=>val);
 
-  print('fcm token: $token');
+  print('jwt token: $token');
 
   final header = {
     "authorization": 'Bearer $token'
@@ -27,6 +65,7 @@ Future<CurrentUser> getUserByMobile(String? mobileNumber) async {
 
   final response = await http.get(Uri.parse('$userBaseUrl/mobile/$mobile'),headers: header);
   if(response.statusCode == 200){
+     await storeFcmToken(user?.uid, token);
      return CurrentUser.fromJson(jsonDecode(response.body));
   }
   else if(response.statusCode == 401){
