@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:quickdeed/LocationService/location_handler.dart';
 import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/api/user_services.dart';
 
@@ -23,6 +24,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
 
   late Future<CurrentUser> futureUser;
+  late Future<LocationDTO> futureLocation;
+  LocationHandler locationHandler = LocationHandler();
 
   // method to navigate user to sign up screen if the user
   // does not have an account in the database
@@ -46,8 +49,12 @@ class _SplashScreenState extends State<SplashScreen> {
         //TODO: check if the user has an account in database
         // TODO: if user has an account , navigate user to home screen
         // TODO: if account is not there , then navigate user to signup screen
-
         print('user already logged in $user');
+
+        // get user location
+        futureLocation = locationHandler.getUserLocation();
+        futureLocation.then((loc) => updateLocation(loc));
+
         String? mobileNumber = user.phoneNumber;
         futureUser = getUserByMobile(mobileNumber);
         futureUser.then((dbUser) => handleCurrentUser(dbUser, context)

@@ -115,7 +115,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
     if(user != null){
       String? mbl = user.phoneNumber?.substring(3);
       String userId = user.uid;
-      //TODO : get user location and add it below ot the LocationDTO object
+      //TODO : get user location and add it below in the LocationDTO object
       LocationDTO loc = await getUserLocation();
       List<RequestDTO> reqs = [];
       List<String> skills = [];
@@ -426,7 +426,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                 ),
               ),
 
-              SizedBox(height : 50.h),
+              SizedBox(height : 60.h),
 
               Center(
                 child: showLoading ? const CircularProgressIndicator(
@@ -435,8 +435,6 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                   strokeWidth: 5,
                 ) : null ,
               ),
-
-
 
               const Spacer(),
 

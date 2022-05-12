@@ -1,16 +1,12 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/Models/current_user.dart';
-import 'package:quickdeed/Models/users_model.dart';
 import 'package:quickdeed/api/user_services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:quickdeed/arguments/view_user_screen_arguments.dart';
-import 'package:quickdeed/config/Assets.dart';
 
 class UsersList extends StatefulWidget {
 

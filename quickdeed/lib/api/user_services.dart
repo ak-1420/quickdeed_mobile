@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,8 +8,7 @@ import 'package:quickdeed/Models/current_user.dart';
 
 const userBaseUrl = "https://user-service-xi.vercel.app/api/v1/users";
 
-
-
+// method to store user device fcm token
 Future<void> storeFcmToken(String? uid , String? jwtToken) async {
     if(uid == null || jwtToken == null) return;
 
@@ -47,6 +44,37 @@ Future<void> storeFcmToken(String? uid , String? jwtToken) async {
     return;
 }
 
+// method to update user location
+Future<void> updateLocation(LocationDTO newLocation) async {
+   User? user = FirebaseAuth.instance.currentUser;
+   final token = await user?.getIdToken().then((val) => val);
+   final header = {
+     "authorization" : 'Bearer $token',
+     "Content-Type": "application/json"
+   };
+
+   Map data = {
+     'userId':user?.uid,
+     'location':{
+       'lattitude': newLocation.lattitude,
+       'longitude': newLocation.longitude,
+       'address': newLocation.address
+     }
+   };
+   var reqBody = json.encode(data);
+   final res = await http.post(Uri.parse('$userBaseUrl/update-location'),
+     headers: header,
+     body: reqBody
+   );
+   if(res.statusCode == 200){
+     print('location updated successfully!');
+   }
+  else{
+    print('location update failed!');
+   }
+}
+
+//  method to get user by mobile number
 Future<CurrentUser> getUserByMobile(String? mobileNumber) async {
   String mobile = (mobileNumber == null) ? "" : mobileNumber.toString();
   if(mobile == ""){

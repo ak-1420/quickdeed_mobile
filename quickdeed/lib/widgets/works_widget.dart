@@ -1,105 +1,78 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickdeed/LocationService/location_handler.dart';
+import 'package:quickdeed/Models/work.dart';
 import 'package:quickdeed/Models/works_model.dart';
+import 'package:quickdeed/api/user_services.dart';
+import 'package:quickdeed/api/works_services.dart';
+import 'package:quickdeed/arguments/view_work_screen_arguments.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import '../Models/current_user.dart';
 
-class WorksList extends StatelessWidget {
+
+class WorksList extends StatefulWidget {
   WorksList({Key? key}) : super(key: key);
 
-  final List<Works> works = [
-    Works(
-        workName: "Driving",
-        userName: "Hema",
-        estimatedTime: "7.3",
-        amount: 1000,
-        workType: "Delivery",
-        createdTime: "yesterday",
-        location: "1.5km away"),
-    Works(
-        workName: "Fan Repair",
-        userName: "Arun",
-        estimatedTime: "1",
-        amount: 100,
-        workType: "Repair",
-        location: "1.5km away",
-        createdTime: "03-jan-2022"),
-    Works(
-        workName: "Break Repair",
-        userName: "Rose",
-        estimatedTime: "7.3",
-        workType: "Mechanic",
-        amount: 1000,
-        createdTime: "31-dec-2021",
-        location: "1.5km away"),
-    Works(
-        workName: "Song Writer",
-        estimatedTime: "7.3",
-        amount: 1000,
-        workType: "Entertainment",
-        createdTime: "just now",
-        location: "1.5km away"),
-    Works(
-        userName: "Rose",
-        workName: "Singer",
-        estimatedTime: "7.3",
-        amount: 1000,
-        workType: "Entertainment",
-        createdTime: "today 10:00 am",
-        location: "1.5km away"),
-    Works(
-        workName: "Driving",
-        userName: "Hema",
-        estimatedTime: "7.3",
-        amount: 1000,
-        workType: "Delivery",
-        createdTime: "yesterday",
-        location: "1.5km away"),
-    Works(
-        workName: "Fan Repair",
-        userName: "Arun",
-        estimatedTime: "1",
-        amount: 100,
-        workType: "Repair",
-        location: "1.5km away",
-        createdTime: "03-jan-2022"),
-    Works(
-        workName: "Break Repair",
-        userName: "Rose",
-        estimatedTime: "7.3",
-        workType: "Mechanic",
-        amount: 1000,
-        createdTime: "31-dec-2021",
-        location: "1.5km away"),
-    Works(
-        workName: "Song Writer",
-        estimatedTime: "7.3",
-        amount: 1000,
-        workType: "Entertainment",
-        createdTime: "just now",
-        location: "1.5km away"),
-    Works(
-        userName: "Rose",
-        workName: "Singer",
-        estimatedTime: "7.3",
-        amount: 1000,
-        workType: "Entertainment",
-        createdTime: "today 10:00 am",
-        location: "1.5km away"),
-  ];
+  @override
+  State<WorksList> createState() => _WorksListState();
+}
+
+class _WorksListState extends State<WorksList> {
+  List<Work> worksData  = [];
+  LocationHandler locationHandler = LocationHandler();
+  late Future<CurrentUser> futureUser;
+  CurrentUser? cUser;
+
+  void handleWorksList(List<Work> works , context , String uid) {
+    setState((){
+      worksData = works.where((work) => work.userId != uid).toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    User? u = FirebaseAuth.instance.currentUser;
+    if(u != null){
+      String? mobileNumber = u.phoneNumber;
+      futureUser = getUserByMobile(mobileNumber);
+      futureUser.then((dbUser) => setState((){
+        cUser = dbUser;
+      })
+      );
+      String uid = u.uid;
+      getAllWorks().then((val) => handleWorksList(val, context, uid));
+    }
+    else{
+      Navigator.pushNamedAndRemoveUntil(context, '/sendOtp', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if(worksData.isEmpty || cUser == null){
+      return const Center(child: CircularProgressIndicator(),);
+    }
+
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: works.length,
+      itemCount: worksData.length,
       itemBuilder: (BuildContext context , int index){
         return Card(
           elevation: 10,
           child: ListTile(
             onTap: () {
-              Navigator.pushNamed(context, '/viewWork');
+              Navigator.pushNamed(context, '/viewWork' ,
+                arguments: ViewWorkArguments(
+                  work: worksData[index],
+                  user: cUser
+                )
+              );
             },
             horizontalTitleGap: 10.0,
             leading: CircleAvatar(
@@ -111,7 +84,7 @@ class WorksList extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10.0),
               child: Row(
                 children: [
-                  Text(works[index].workName,
+                  Text(worksData[index].name,
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: Colors.black87,
@@ -119,7 +92,7 @@ class WorksList extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(works[index].createdTime,
+                  Text(timeago.format(DateTime.parse(worksData[index].createdAt)),
                     style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w500,
                         fontSize: 12.sp
@@ -139,7 +112,7 @@ class WorksList extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width:10.w,),
-                    Text(works[index].userName ,
+                    Text(worksData[index].userName ,
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w600,
                           fontSize: 14.sp,
@@ -147,7 +120,7 @@ class WorksList extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Text(works[index].location,
+                    Text(locationHandler.getUserDistance(cUser?.location.lattitude ?? 0, cUser?.location.longitude ?? 0 , worksData[index].location.lattitude , worksData[index].location.longitude),
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w500,
                           fontSize: 12.sp
@@ -166,7 +139,7 @@ class WorksList extends StatelessWidget {
                                 fontSize: 12.sp
                             ),
                           ),
-                          Text(works[index].amount.toString() ,
+                          Text(worksData[index].amount.toString() ,
                             style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14.sp,
@@ -184,7 +157,7 @@ class WorksList extends StatelessWidget {
                                 fontSize: 12.sp
                             ),
                           ),
-                          Text(works[index].workType ,
+                          Text(worksData[index].type ,
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.black87
