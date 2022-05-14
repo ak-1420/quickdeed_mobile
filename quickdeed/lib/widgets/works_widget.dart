@@ -4,32 +4,57 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/LocationService/location_handler.dart';
 import 'package:quickdeed/Models/work.dart';
-import 'package:quickdeed/Models/works_model.dart';
 import 'package:quickdeed/api/user_services.dart';
 import 'package:quickdeed/api/works_services.dart';
 import 'package:quickdeed/arguments/view_work_screen_arguments.dart';
+import 'package:quickdeed/screens/home_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../Models/current_user.dart';
 
 
 class WorksList extends StatefulWidget {
-  WorksList({Key? key}) : super(key: key);
+  final String searchWord;
+  final WorkFilter? sortBy;
+  const WorksList({Key? key ,required this.searchWord , required this.sortBy}) : super(key: key);
 
   @override
   State<WorksList> createState() => _WorksListState();
 }
 
 class _WorksListState extends State<WorksList> {
+
   List<Work> worksData  = [];
+  List<Work> workUIData = [];
+
   LocationHandler locationHandler = LocationHandler();
   late Future<CurrentUser> futureUser;
   CurrentUser? cUser;
 
-  void handleWorksList(List<Work> works , context , String uid) {
+  void handleWorksList(List<Work> works , context , String uid , bool isInitState) {
     setState((){
-      worksData = works.where((work) => work.userId != uid).toList();
+      if(isInitState == true){
+        worksData = works.where((work) => work.userId != uid).toList();
+      }
+      else{
+        workUIData = works.where((work) => work.userId != uid && work.name.contains(widget.searchWord)).toList();
+      }
     });
   }
+
+  @override
+  void didUpdateWidget(WorksList oldWorksList) {
+    super.didUpdateWidget(oldWorksList);
+    if (widget.searchWord != oldWorksList.searchWord) {
+      // TODO: whenever search word changes filter the worksData
+      if(cUser?.userId != null){
+        handleWorksList(worksData, context, cUser?.userId ?? "" , true);
+      }
+
+    }
+  }
+
+
+
 
   @override
   void initState() {
@@ -43,7 +68,7 @@ class _WorksListState extends State<WorksList> {
       })
       );
       String uid = u.uid;
-      getAllWorks().then((val) => handleWorksList(val, context, uid));
+      getAllWorks().then((val) => handleWorksList(val, context, uid , true));
     }
     else{
       Navigator.pushNamedAndRemoveUntil(context, '/sendOtp', (route) => false);
@@ -52,16 +77,23 @@ class _WorksListState extends State<WorksList> {
 
   @override
   Widget build(BuildContext context) {
+    print('sort works by: ${widget.sortBy}');
+
+    List<Work> Data = (workUIData.isEmpty) ? worksData : workUIData;
 
     if(worksData.isEmpty || cUser == null){
       return const Center(child: CircularProgressIndicator(),);
+    }
+
+    else if(workUIData.isEmpty && worksData.isNotEmpty && widget.searchWord != ""){
+      return const Center(child: Text('No Matches!'),);
     }
 
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: worksData.length,
+      itemCount: Data.length,
       itemBuilder: (BuildContext context , int index){
         return Card(
           elevation: 10,
@@ -69,7 +101,7 @@ class _WorksListState extends State<WorksList> {
             onTap: () {
               Navigator.pushNamed(context, '/viewWork' ,
                 arguments: ViewWorkArguments(
-                  work: worksData[index],
+                  work: Data[index],
                   user: cUser
                 )
               );
@@ -84,7 +116,7 @@ class _WorksListState extends State<WorksList> {
               padding: const EdgeInsets.only(bottom: 10.0),
               child: Row(
                 children: [
-                  Text(worksData[index].name,
+                  Text(Data[index].name,
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: Colors.black87,
@@ -92,7 +124,7 @@ class _WorksListState extends State<WorksList> {
                     ),
                   ),
                   const Spacer(),
-                  Text(timeago.format(DateTime.parse(worksData[index].createdAt)),
+                  Text(timeago.format(DateTime.parse(Data[index].createdAt)),
                     style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w500,
                         fontSize: 12.sp
@@ -112,7 +144,7 @@ class _WorksListState extends State<WorksList> {
                       ),
                     ),
                     SizedBox(width:10.w,),
-                    Text(worksData[index].userName ,
+                    Text(Data[index].userName ,
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w600,
                           fontSize: 14.sp,
@@ -120,7 +152,7 @@ class _WorksListState extends State<WorksList> {
                       ),
                     ),
                     const Spacer(),
-                    Text(locationHandler.getUserDistance(cUser?.location.lattitude ?? 0, cUser?.location.longitude ?? 0 , worksData[index].location.lattitude , worksData[index].location.longitude),
+                    Text(locationHandler.getUserDistance(cUser?.location.lattitude ?? 0, cUser?.location.longitude ?? 0 , Data[index].location.lattitude , Data[index].location.longitude),
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w500,
                           fontSize: 12.sp
@@ -139,7 +171,7 @@ class _WorksListState extends State<WorksList> {
                                 fontSize: 12.sp
                             ),
                           ),
-                          Text(worksData[index].amount.toString() ,
+                          Text(Data[index].amount.toString() ,
                             style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14.sp,
@@ -157,7 +189,7 @@ class _WorksListState extends State<WorksList> {
                                 fontSize: 12.sp
                             ),
                           ),
-                          Text(worksData[index].type ,
+                          Text(Data[index].type ,
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.black87

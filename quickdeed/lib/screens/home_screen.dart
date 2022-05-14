@@ -3,6 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quickdeed/widgets/users_widget.dart';
 import 'package:quickdeed/widgets/works_widget.dart';
 
+enum WorkFilter {distance , amount}
+enum UserFilter {distance , rating}
+
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
 
@@ -13,6 +17,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   
   int _selectedIndex = 0;
+
+  WorkFilter? sortWork = WorkFilter.distance;
+
+  ValueNotifier<UserFilter?> selectedUserSort = ValueNotifier<UserFilter?>(null);
+  ValueNotifier<WorkFilter?> selectedWorkSort = ValueNotifier<WorkFilter?>(WorkFilter.distance);
+
+  UserFilter? sortUser = UserFilter.distance;
   
   final nameController = TextEditingController();
 
@@ -23,6 +34,105 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isSearch = false ;
 
   bool viewUsers =  false;
+
+  String searchWord = "";
+
+  List<Widget> workFilter(){
+    return [
+      SizedBox(
+        height: 10.h,
+      ),
+      const Text("Sort by",style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black
+      ),),
+      const Divider(thickness: 2.0,),
+      SizedBox(
+        height: 10.h,
+      ),
+      AnimatedBuilder(
+        child: Text(WorkFilter.distance.name),
+        animation: selectedWorkSort,
+        builder: (BuildContext context, Widget? child) {
+          return RadioListTile(
+              value: WorkFilter.distance,
+              groupValue: selectedWorkSort.value,
+              title: child,
+              onChanged: (WorkFilter? value) {
+                selectedWorkSort.value = value;
+                setState(() {
+                  sortWork = value;
+                });
+              });
+        },
+      ),
+      AnimatedBuilder(
+        child: Text(WorkFilter.amount.name),
+        animation: selectedWorkSort,
+        builder: (BuildContext context, Widget? child) {
+          return RadioListTile(
+              value: WorkFilter.amount,
+              groupValue: selectedWorkSort.value,
+              title: child,
+              onChanged: (WorkFilter? value) {
+                selectedWorkSort.value = value;
+                setState(() {
+                  sortWork = value;
+                });
+              });
+        },
+      ),
+    ];
+  }
+
+  List<Widget> userFilter(){
+    return [
+      SizedBox(
+        height: 10.h,
+      ),
+      const Text("Sort by",style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black
+      ),),
+      const Divider(thickness: 2.0,),
+      SizedBox(
+        height: 10.h,
+      ),
+      AnimatedBuilder(
+        child: Text(UserFilter.distance.name),
+        animation: selectedUserSort,
+        builder: (BuildContext context, Widget? child) {
+          return RadioListTile(
+              value: UserFilter.distance,
+              groupValue: selectedUserSort.value,
+              title: child,
+              onChanged: (UserFilter? value) {
+                selectedUserSort.value = value;
+                setState(() {
+                  sortUser = value;
+                });
+              });
+        },
+      ),
+      AnimatedBuilder(
+        child: Text(UserFilter.rating.name),
+        animation: selectedUserSort,
+        builder: (BuildContext context, Widget? child) {
+          return RadioListTile(
+              value: UserFilter.rating,
+              groupValue: selectedUserSort.value,
+              title: child,
+              onChanged: (UserFilter? value) {
+                selectedUserSort.value = value;
+                setState(() {
+                  sortUser = value;
+                });
+              });
+        },
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -59,8 +169,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ? TextField(
                     keyboardType: TextInputType.name,
                     controller: searchController,
-                    onChanged: (searchWord) {
-                            //TODO: filter works/users by search word
+                    onChanged: (val) {
+                      //TODO: filter works/users by search word
+                      setState(() {
+                        searchWord = val;
+                      });
                     },
                     decoration: InputDecoration(
                     hintStyle: const TextStyle(color: Colors.white),
@@ -78,12 +191,20 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               icon: const Icon(Icons.search),
             ),
-            IconButton(
-              onPressed: () {
-                //handle for filtering
-              },
-              icon: const Icon(Icons.filter_alt),
-            ),
+            PopupMenuButton(
+                offset: const Offset(0, 60),
+                icon: const Icon(Icons.filter_alt),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      enabled: false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:(viewUsers) ? userFilter() : workFilter(),
+                      )
+                  )
+                ]
+            )
           ],
         ),
         body: SingleChildScrollView(
@@ -117,13 +238,15 @@ class _HomeScreenState extends State<HomeScreen> {
                        onChanged: (onChanged){
                          setState(() {
                             viewUsers = !viewUsers;
+                            searchWord = "";
+                            searchController.clear();
                          });
                        }
                    )
                  ],
                ),
               ),
-              viewUsers ? const UsersList() : WorksList()
+              viewUsers ?  UsersList(searchWord: searchWord , sortBy: sortUser,) : WorksList(searchWord: searchWord, sortBy : sortWork)
             ],
           ),
         ),
@@ -161,6 +284,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   }
 }
+
+
+
+
 
 
 
