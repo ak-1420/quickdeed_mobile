@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> {
           title: 'Quick Deed',
           theme: ThemeData(
             primarySwatch: Colors.blue,
-            textTheme: GoogleFonts.pacificoTextTheme(
+            textTheme: GoogleFonts.robotoTextTheme(
               Theme.of(context).textTheme,
             ),
           ),

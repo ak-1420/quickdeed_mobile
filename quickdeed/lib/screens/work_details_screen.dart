@@ -177,7 +177,7 @@ class _WorkDetailsScreen extends State<WorkDetailsScreen> {
                                       MaterialStateProperty.all(Colors.white),
                                 ),
                                 onPressed: () {
-                                  sendRequest(args.user?.userId , args.work?.workId , context);
+                                  sendRequest(args.work?.userId , args.work?.workId , context);
                                 },
 
                                 child: Text(
