@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   WorkFilter? sortWork = WorkFilter.distance;
 
   ValueNotifier<UserFilter?> selectedUserSort = ValueNotifier<UserFilter?>(null);
-  ValueNotifier<WorkFilter?> selectedWorkSort = ValueNotifier<WorkFilter?>(WorkFilter.distance);
+  ValueNotifier<WorkFilter?> selectedWorkSort = ValueNotifier<WorkFilter?>(null);
 
   UserFilter? sortUser = UserFilter.distance;
   

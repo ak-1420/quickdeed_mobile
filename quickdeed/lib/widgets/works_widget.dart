@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/LocationService/location_handler.dart';
 import 'package:quickdeed/Models/work.dart';
@@ -10,6 +11,12 @@ import 'package:quickdeed/arguments/view_work_screen_arguments.dart';
 import 'package:quickdeed/screens/home_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../Models/current_user.dart';
+
+class WorkDistance{
+  final String workId;
+  final int distance;
+  WorkDistance({required this.workId , required this.distance});
+}
 
 
 class WorksList extends StatefulWidget {
@@ -26,19 +33,100 @@ class _WorksListState extends State<WorksList> {
   List<Work> worksData  = [];
   List<Work> workUIData = [];
 
+  // sorted works by distance
+  List<Work> sortedWorksByDistance = [];
+  // sorted works by amount
+  List<Work> sortedWorksByAmount = [];
+
   LocationHandler locationHandler = LocationHandler();
   late Future<CurrentUser> futureUser;
   CurrentUser? cUser;
 
-  void handleWorksList(List<Work> works , context , String uid , bool isInitState) {
+  Work? getSortedWork(List<Work> works, String workId) {
+    Work? work;
+    for(int i = 0 ; i < works.length ; i++){
+      if(works[i].workId == workId)
+      {
+        work = works[i];
+      }
+    }
+    return work;
+  }
+
+
+  void handleWorksList(List<Work> works , context , String uid , bool isInitState , bool isSort) {
+
+    if(uid == "") return;
+
     setState((){
       if(isInitState == true){
         worksData = works.where((work) => work.userId != uid).toList();
+
+        // sort works by user distance
+        List<WorkDistance> userDistMap = worksData.map((w) => WorkDistance(
+                workId: w.workId,
+                distance: getUserDistance(cUser?.location.lattitude ?? 0, cUser?.location.longitude ?? 0, w.location.lattitude, w.location.longitude)
+            )
+        ).toList();
+
+        userDistMap.sort((a , b){
+          int d1 = a.distance;
+          int d2 = b.distance;
+          if(d1 > d2) {
+            return 1;
+          }
+          else if(d1 < d2){
+            return -1;
+          }
+          return 0;
+        });
+
+        for(int i = 0 ; i < userDistMap.length ; i++){
+          Work? work = getSortedWork(worksData, userDistMap[i].workId);
+          if(work != null && work.userId != uid){
+            sortedWorksByDistance.add(work);
+          }
+        }
+
+        // sort works by amount
+        sortedWorksByAmount = works.where((work) => work.userId != uid).toList();
+        sortedWorksByAmount.sort((a , b){
+          double a1 = a.amount;
+          double a2 = b.amount;
+
+          if(a1 > a2){
+            return -1;
+          }else if(a1 < a2){
+            return 1;
+          }
+          return 0;
+        });
+
       }
       else{
-        workUIData = works.where((work) => work.userId != uid && work.name.contains(widget.searchWord)).toList();
+
+        if(widget.sortBy?.name == WorkFilter.distance.name && isSort == true){
+          // filter by distance in ascending order
+          workUIData = sortedWorksByDistance;
+        }
+        else if(widget.sortBy?.name == WorkFilter.amount.name && isSort == true){
+          workUIData = sortedWorksByAmount;
+        }
+        else if(isSort == false){
+          workUIData = works.where((work) => work.userId != uid && work.name.contains(widget.searchWord)).toList();
+        }
       }
     });
+  }
+
+  int getUserDistance(num sLat ,num sLng , num eLat , num eLng){
+    double s_lat = double.parse(sLat.toString());
+    double s_lng = double.parse(sLng.toString());
+    double e_lat = double.parse(eLat.toString());
+    double e_lng = double.parse(eLng.toString());
+    double distanceInMeters = Geolocator.distanceBetween(s_lat , s_lng , e_lat, e_lng);
+    double distanceInKms =  distanceInMeters / 1000;
+    return distanceInKms.ceil();
   }
 
   @override
@@ -47,10 +135,15 @@ class _WorksListState extends State<WorksList> {
     if (widget.searchWord != oldWorksList.searchWord) {
       // TODO: whenever search word changes filter the worksData
       if(cUser?.userId != null){
-        handleWorksList(worksData, context, cUser?.userId ?? "" , true);
+        handleWorksList(worksData, context, cUser?.userId ??  "" , false , false);
       }
-
     }
+    else
+      {
+        if(cUser?.userId != null){
+          handleWorksList(worksData , context , cUser?.userId ?? "", false , true);
+        }
+      }
   }
 
 
@@ -68,7 +161,7 @@ class _WorksListState extends State<WorksList> {
       })
       );
       String uid = u.uid;
-      getAllWorks().then((val) => handleWorksList(val, context, uid , true));
+      getAllWorks().then((val) => handleWorksList(val, context, uid , true , false));
     }
     else{
       Navigator.pushNamedAndRemoveUntil(context, '/sendOtp', (route) => false);
@@ -77,7 +170,6 @@ class _WorksListState extends State<WorksList> {
 
   @override
   Widget build(BuildContext context) {
-    print('sort works by: ${widget.sortBy}');
 
     List<Work> Data = (workUIData.isEmpty) ? worksData : workUIData;
 
@@ -116,11 +208,14 @@ class _WorksListState extends State<WorksList> {
               padding: const EdgeInsets.only(bottom: 10.0),
               child: Row(
                 children: [
-                  Text(Data[index].name,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black87,
-                        fontSize: 16.sp
+                  Flexible(
+                    child: Text(Data[index].name,
+                      // overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black87,
+                          fontSize: 16.sp
+                      ),
                     ),
                   ),
                   const Spacer(),
