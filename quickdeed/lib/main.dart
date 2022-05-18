@@ -60,6 +60,7 @@ class _MyAppState extends State<MyApp> {
     // to handle foreground notification
     FirebaseMessaging.onMessage.listen((message) {
       if(message.notification != null) {
+        if(message.notification?.title != "New message")
         print('foreground notification: ${message.notification?.body}');
         print('foreground title ${message.notification?.title}');
         LocalNotificationService.display(message);

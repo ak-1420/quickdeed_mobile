@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/Models/message_model.dart';
 import 'package:quickdeed/api/user_services.dart';
@@ -7,6 +8,7 @@ import 'package:quickdeed/widgets/chat_app_bar.dart';
 import 'package:quickdeed/widgets/chat_list_widget.dart';
 import 'package:quickdeed/widgets/input_widget.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:audioplayers/audioplayers.dart';
 
 import '../arguments/chat_screen_args.dart';
 
@@ -44,11 +46,17 @@ class Helper extends StatefulWidget {
 class _HelperState extends State<Helper> {
   IO.Socket? socket;
   List<Message> messages = [];
+  static AudioCache player = AudioCache();
+  final sendTone = "audio_sender.mp3";
+  final receiveTone = "audio_receiver.mp3";
+
 
   void setMessage(String type , String message){
     Message msgModel =  Message(type: type, message: message, senderId: widget.currentUser!.uid, receiverId: widget.chatUser.userId , timestamp:DateTime.now().millisecondsSinceEpoch );
      setState(() {
-       messages.add(msgModel);
+       messages.insert(0 ,msgModel);
+       // play sent message sound
+       player.play(sendTone);
      });
   }
 
@@ -73,7 +81,9 @@ class _HelperState extends State<Helper> {
         // setMessage("received", payload['message']);
         if(mounted){
           setState(() {
-            messages.add(Message(type: type , senderId: senderId, receiverId: receiverId , timestamp: timestamp , message: message));
+            messages.insert(0 ,Message(type: type , senderId: senderId, receiverId: receiverId , timestamp: timestamp , message: message));
+            // play received message sound
+            player.play(receiveTone);
           });
         }
       });
@@ -103,6 +113,7 @@ class _HelperState extends State<Helper> {
     }
     connect();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +127,8 @@ class _HelperState extends State<Helper> {
                 padding: const EdgeInsets.only(bottom: 50.0),
                 child: Column(
                 children:[
-                  ChatListWidget(chatList:messages , currentUser: widget.currentUser),//Chat list
+                  ChatListWidget(chatList:messages
+                      , currentUser: widget.currentUser),//Chat list
                 ],
             ),
               ),

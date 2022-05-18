@@ -81,6 +81,9 @@ dependencies:
   #socket io client
   socket_io_client: ^2.0.0-beta.4-nullsafety.0
 
+  #to play message sounds
+  audioplayers: ^0.20.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -115,6 +118,9 @@ flutter:
   assets:
     - images/
   #   - images/a_dot_ham.jpeg
+
+  #   - assets/an_audio_file.mp3
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

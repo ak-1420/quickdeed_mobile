@@ -14,7 +14,7 @@ class ChatListWidget extends StatefulWidget{
 }
 
 class _ChatListWidgetState extends State<ChatListWidget> {
-  final ScrollController listScrollController = ScrollController();
+
 
   Widget renderSentMessage(int index){
     return Container(
@@ -93,8 +93,6 @@ class _ChatListWidgetState extends State<ChatListWidget> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
 
@@ -108,13 +106,16 @@ class _ChatListWidgetState extends State<ChatListWidget> {
       );
     }
     return Flexible(
+      child: Align(
+        alignment: Alignment.bottomCenter,
         child: ListView.builder(
           padding: const EdgeInsets.all(10.0),
           itemBuilder: (context, index) => (widget.chatList[index].senderId == widget.currentUser?.uid) ? renderSentMessage(index) : renderReceivedMessage(index), //type can be sent / received
           itemCount: widget.chatList.length,
-          // reverse: true,
-          controller: listScrollController,
-        ));
+          reverse: true,
+        ),
+      ),
+    );
   }
 }
 
