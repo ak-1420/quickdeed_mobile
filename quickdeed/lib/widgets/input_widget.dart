@@ -1,23 +1,54 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/config/Palette.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class InputWidget extends StatelessWidget {
+class InputWidget extends StatefulWidget {
+  final CurrentUser chatUser;
+  final IO.Socket? socket;
+  final Function setMessage;
+  final User? user;
+  const InputWidget({Key? key , required this.chatUser , required this.user , required this.socket , required this.setMessage}) : super(key: key);
+  @override
+  State<InputWidget> createState() => _InputWidgetState();
+}
 
-  final TextEditingController textEditingController = new TextEditingController();
+class _InputWidgetState extends State<InputWidget> {
+  final TextEditingController textEditingController =  TextEditingController();
+  String currentMessage = "";
+
+  void sendMessage(String msg , String sourceId ,String targetId) async {
+     String jwtToken = await widget.user?.getIdToken().then((val) => val) ?? "";
+           widget.setMessage("sent" ,msg);
+           if(jwtToken != "") {
+             widget.socket?.emit("send", {
+               'message': msg,
+               'sourceId': sourceId,
+               'targetId': targetId,
+               'type': 'sent',
+               'timestamp': DateTime
+                   .now()
+                   .millisecondsSinceEpoch,
+               'token': jwtToken
+             });
+           }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Row(
-        children: <Widget>[
+        children:[
           Material(
-          
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 1.0),
-              child: new IconButton(
-                icon: new Icon(Icons.face),
+            child:  Container(
+              margin:  const EdgeInsets.symmetric(horizontal: 1.0),
+              child:  IconButton(
+                icon: const Icon(Icons.face),
                 color: Palette.primaryColor,
-                onPressed: () => {},
+                onPressed: (){
+                 //TODO: show emojis keypad
+                },
               ),
             ),
             color: Colors.white,
@@ -33,17 +64,29 @@ class InputWidget extends StatelessWidget {
                   hintText: 'Type a message',
                   hintStyle: TextStyle(color: Palette.greyColor),
                 ),
+                onChanged: (value) => {
+                  setState(() {
+                    currentMessage = value;
+                  })
+                },
               ),
             ),
           ),
 
           // Send Message Button
           Material(
-            child: new Container(
-              margin: new EdgeInsets.symmetric(horizontal: 8.0),
-              child: new IconButton(
-                icon: new Icon(Icons.send),
-                onPressed: () => {},
+            child:  Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.send),
+                onPressed: (){
+                  //TODO emit new message
+                  if(textEditingController.text.isNotEmpty && widget.user?.uid != null){
+                    sendMessage(textEditingController.text, widget.user!.uid, widget.chatUser.userId);
+                    textEditingController.clear();
+                  }
+
+                },
                 color: Palette.primaryColor,
               ),
             ),

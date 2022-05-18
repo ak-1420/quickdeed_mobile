@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/api/user_services.dart';
-import 'package:quickdeed/config/Assets.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({ Key? key }) : super(key: key);
@@ -25,9 +24,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
    double rating = 0;
    List<String> skills = [];
 
-
-
- void setProfileUser(CurrentUser pUser , context){
+  void setProfileUser(CurrentUser pUser , context){
    setState(() {
      profilePicture = (pUser.profilePic != "") ? pUser.profilePic : profilePicture;
      coverPicture = (pUser.profilePic != "") ? pUser.profilePic : profilePicture;
@@ -38,7 +35,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
    });
  }
-
 
   @override
   void initState() {
@@ -59,6 +55,68 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     }
   }
 
+
+  showAddSkillsDialog(BuildContext context){
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: (){
+        Navigator.of(context).pop();
+      },
+    );
+    Widget okButton = TextButton(
+      child: const Text("Ok"),
+      onPressed: (){
+        // hit update skills api
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: const Text("Add / Update Skills"),
+      // content: showSkillChips(),
+      actions: [
+        cancelButton,
+        okButton
+      ],
+    );
+  }
+
+  // show logout alert dialog to the user
+  showAlertDialog(BuildContext context){
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: (){
+        Navigator.of(context).pop();
+      },
+    );
+
+    Widget okButton =  TextButton(
+      child: const Text("Ok"),
+      onPressed: (){
+        signOut();
+        Navigator.of(context).pop();
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Warning"),
+      content: const Text("Would you really like to logout?"),
+      actions: [
+        cancelButton,
+        okButton
+      ],
+    );
+
+    //show the dialog
+    showDialog(context: context,
+        builder: (BuildContext context){
+          return alert;
+        }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +124,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // SizedBox(height: 20.h,),
               Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -73,16 +132,42 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     fit: BoxFit.cover
                   )
                 ),
-                child: Container(
-                  width: double.infinity,
-                  height: 200.h,
-                  child: Container(
-                    alignment:const Alignment(0.0,2.5),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(profilePicture),
-                      radius: 60.r,
+                child: Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:[
+                          IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back ,
+                              color: Colors.white,
+                            ),
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                          ),
+                          IconButton(
+                            icon:  const Icon(Icons.logout ,
+                              color: Colors.white,
+                            ),
+                            onPressed: (){
+                              showAlertDialog(context);
+                            },
+                          ),
+                        ]
                     ),
-                  ),
+                    Container(
+                      width: double.infinity,
+                      height: 200.h,
+                      child: Container(
+                        alignment:const Alignment(0.0,2.5),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(profilePicture),
+                          radius: 60.r,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 80.h,),
@@ -185,78 +270,3 @@ List<Widget> renderSkills(List<String> skills){
 
   return ls;
 }
-
-// [
-// Row(
-// mainAxisSize: MainAxisSize.max,
-// mainAxisAlignment: MainAxisAlignment.start,
-// children:  [
-// Card(
-// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Text("flutter",
-// style: GoogleFonts.roboto(),
-// )
-// ),
-// ),
-// Card(
-// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Text("react js",
-// style: GoogleFonts.roboto(),
-// )
-// ),
-// ),
-// ],
-// ),
-// Row(
-// mainAxisSize: MainAxisSize.max,
-// mainAxisAlignment: MainAxisAlignment.start,
-// children:  [
-// Card(
-// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Text("Node js",
-// style: GoogleFonts.roboto(),
-// )
-// ),
-// ),
-// Card(
-// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Text("MERN stack",
-// style: GoogleFonts.roboto(),
-// )
-// ),
-// ),
-// ],
-// ),
-// Row(
-// mainAxisSize: MainAxisSize.max,
-// mainAxisAlignment: MainAxisAlignment.start,
-// children:  [
-// Card(
-// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Text("Problem Solving",
-// style: GoogleFonts.roboto(),
-// )
-// ),
-// ),
-// Card(
-// margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Text("Quick Learning",
-// style: GoogleFonts.roboto(),
-// )
-// ),
-// ),
-// ],
-// )
-// ]

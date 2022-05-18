@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -258,7 +259,9 @@ class _WorksListState extends State<WorksList> {
                 SizedBox(height: 5.h,),
                 Row(
                     children:[
-                      Row(
+                      Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.center,
                         children: [
                           Text("amount : ",
                             style: GoogleFonts.roboto(
@@ -267,12 +270,12 @@ class _WorksListState extends State<WorksList> {
                             ),
                           ),
                           Text(Data[index].amount.toString() ,
-                            style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp,
-                                color: Colors.black87
-                            ),
-                          )
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp,
+                                    color: Colors.black87
+                                ),
+                              ),
                         ],
                       ),
                       const Spacer(),

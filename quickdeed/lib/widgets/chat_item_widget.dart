@@ -5,7 +5,6 @@ import 'package:intl/date_symbol_data_local.dart';
 
 class ChatItemWidget extends StatelessWidget{
   var index;
-
   ChatItemWidget(this.index);
 
   @override

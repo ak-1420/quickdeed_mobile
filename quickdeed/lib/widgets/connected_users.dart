@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickdeed/Models/users_model.dart';
 import 'package:quickdeed/api/user_services.dart';
+import 'package:quickdeed/arguments/chat_screen_args.dart';
 
 import '../Models/current_user.dart';
 
@@ -125,7 +126,9 @@ class _ConnectedUsersState extends State<ConnectedUsers> {
                                     color: Colors.white),
                               ),
                               onPressed: () {
-                                Navigator.pushNamed(context, '/chat');
+                                Navigator.pushNamed(context, '/chat',
+                                  arguments: ChatUserArguments(user: usersData[index])
+                                );
                               },
                             )
                           ],

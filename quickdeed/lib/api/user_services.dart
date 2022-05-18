@@ -4,9 +4,50 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickdeed/Models/current_user.dart';
-
+import 'package:quickdeed/Models/message_model.dart';
 
 const userBaseUrl = "https://user-service-xi.vercel.app/api/v1/users";
+//const userBaseUrl = "http://192.168.232.118:3400/api/v1/users";
+
+// method to fetch user messeges
+Future<List<Message>> fetchMessages(String senderId , String receiverId) async {
+  User? user = FirebaseAuth.instance.currentUser;
+  final token = await user?.getIdToken().then((val) => val);
+  final header = {
+    "authorization" : 'Bearer $token'
+  };
+  final res = await http.get(Uri.parse('$userBaseUrl/message?senderId=$senderId&receiverId=$receiverId'),
+  headers: header
+  );
+
+  if(res.statusCode == 200){
+    var parsed = jsonDecode(res.body);
+    List<dynamic> data = parsed['data'];
+    bool status = parsed['status'];
+    String msg = parsed['message'];
+    List<Message> list = [];
+    if(status == true && data.isNotEmpty){
+      List<Map<String , dynamic>> jsons = data.map((d) => {'data' : d}).toList();
+      list = jsons.map((d) => Message.fromJson(d)).toList();
+    }
+    return list;
+  }
+  else if(res.statusCode == 401){
+    print('user is unauthorized to access the api: ${res.body}');
+    throw Exception('forbidden');
+  }
+  else{
+    throw Exception('internal server error');
+  }
+
+}
+
+// method  to signout the user
+Future<void> signOut() async {
+  await FirebaseAuth.instance.signOut();
+}
+
+
 
 // method to store user device fcm token
 Future<void> storeFcmToken(String? uid , String? jwtToken) async {

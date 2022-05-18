@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/config/Assets.dart';
 import 'package:quickdeed/config/Palette.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height = 100;
+class ChatAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final CurrentUser chatUser;
+  const ChatAppBar({Key? key , required this.chatUser}) : super(key: key);
+
+  @override
+  State<ChatAppBar> createState() => _ChatAppBarState();
+
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize {
+    return Size.fromHeight(80.h);
+  }
+}
+
+class _ChatAppBarState extends State<ChatAppBar> {
+  final double height = 100.h;
+
   final String profilePicture =
       "https://instagram.fhyd11-2.fna.fbcdn.net/v/t51.2885-19/s320x320/124480382_821404835315782_2213267434541466715_n.jpg?_nc_ht=instagram.fhyd11-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=WxyqhagcuHoAX-NoC9i&edm=ABfd0MgBAAAA&ccb=7-4&oh=00_AT9Cz23x3C9IETgHwhoyS-LCZ9-guAL4upjTOoVUfoL2Mg&oe=61FB0289&_nc_sid=7bff83";
 
@@ -11,7 +28,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     var textHeading = TextStyle(
         color: Palette.primaryTextColor,
-        fontSize: 20); // Text style for the name
+        fontSize: 20.sp); // Text style for the name
     var textStyle = TextStyle(
         color: Palette.secondaryTextColor); // Text style for everything else
 
@@ -57,14 +74,14 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Text(' Hema', style: textHeading),
+                                      Text( widget.chatUser.userName , style: textHeading),
                                     ],
                                   ))),
                             ],
                           )),
                       //second row containing the buttons for media
                       Container(
-                          height: 23,
+                          height: 23.h,
                           padding: EdgeInsets.fromLTRB(20, 5, 5, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -75,7 +92,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 style: textStyle,
                               ),
                               VerticalDivider(
-                                width: 30,
+                                width: 30.w,
                                 color: Palette.primaryTextColor,
                               ),
                               Text(
@@ -83,7 +100,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 style: textStyle,
                               ),
                               VerticalDivider(
-                                width: 30,
+                                width: 30.w,
                                 color: Palette.primaryTextColor,
                               ),
                               Text('Files', style: textStyle)
@@ -98,7 +115,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Center(
                     child: CircleAvatar(
                       radius: (80 - (width * .06)) / 2,
-                      backgroundImage: const AssetImage('images/user.jpeg'),
+                      backgroundImage:  NetworkImage(widget.chatUser.profilePic),
                     ),
                   ),
                 ),
@@ -108,6 +125,5 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  @override
   Size get preferredSize => Size.fromHeight(height);
 }
