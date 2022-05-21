@@ -100,8 +100,8 @@ class _ChatListWidgetState extends State<ChatListWidget> {
       return  Column(
           mainAxisAlignment:  MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(child: Text('No Chat')),
+        children: const [
+         // Center(child: Text('No Chat')),
         ],
       );
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class TrackScreen extends StatefulWidget {
   const TrackScreen({Key? key}) : super(key: key);
@@ -13,6 +14,42 @@ class TrackScreen extends StatefulWidget {
 class _TrackScreenState extends State<TrackScreen> {
 
   final workStatusController = TextEditingController();
+  var _razorpay = Razorpay();
+
+  var options = {
+    'key': 'rzp_test_7oiIEflD1lI1Ag',
+    'amount': 500 * 100, // in paisa
+    'name': 'Quick Deed',
+    'timeout':300, // in seconds
+    'description': 'paying for work completion',
+    'prefill': {
+      'contact': '7660941707',
+      'email': 'test@razorpay.com'
+    }
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    print('Payment Done!');
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+    print('Payment Fail');
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet is selected
+    print('external wallet');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +121,12 @@ class _TrackScreenState extends State<TrackScreen> {
                             ),
                             onPressed: () {
                               // TODO: show a toast of success
-                              ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
-                                content: Text("pay amount through online"),
-                              ));
+                              // ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+                              //   content: Text("pay amount through online"),
+                              // ));
+                              
+                              // open razorpay payment
+                              _razorpay.open(options);
                             },
                             child: Text("pay online",
                               style: TextStyle(
@@ -108,10 +148,12 @@ class _TrackScreenState extends State<TrackScreen> {
 
                             ),
                             onPressed: () {
-                              // TODO: show a toast of success
-                              ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
-                                content: Text("connecting ..."),
-                              ));
+                              // // TODO: show a toast of success
+                              // ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+                              //   content: Text("connecting ..."),
+                              // ));
+                              // video call
+                              Navigator.pushNamed(context, '/video');
                             },
                             child: Text("video call",
                               style: TextStyle(
@@ -197,5 +239,11 @@ class _TrackScreenState extends State<TrackScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+   _razorpay.clear();
+    super.dispose();
   }
 }

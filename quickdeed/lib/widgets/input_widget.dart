@@ -59,6 +59,9 @@ class _InputWidgetState extends State<InputWidget> {
             child: Container(
               child: TextField(
                 style: TextStyle(color: Palette.primaryTextColor, fontSize: 15.0),
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                minLines: 1,
                 controller: textEditingController,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Type a message',

@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:quickdeed/Models/current_user.dart';
 import 'package:quickdeed/Models/message_model.dart';
 import 'package:quickdeed/api/user_services.dart';
-import 'package:quickdeed/widgets/chat_app_bar.dart';
 import 'package:quickdeed/widgets/chat_list_widget.dart';
 import 'package:quickdeed/widgets/input_widget.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -117,8 +118,53 @@ class _HelperState extends State<Helper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: ChatAppBar( chatUser: widget.chatUser,), // Custom app bar for chat screen
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          ),
+          backgroundColor: Colors.black87,
+          title: Row(
+            children: [
+              CircleAvatar(
+                radius: 20.r,
+                backgroundImage:  NetworkImage(widget.chatUser.profilePic),
+              ),
+              SizedBox(width: 8.w,),
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.chatUser.userName,
+                    style: GoogleFonts.pacifico(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.sp,
+                        color: const Color.fromRGBO(255 , 255 , 255 , 1)
+                    ),
+                  ),
+                  Text(
+                    "online",
+                    style: GoogleFonts.rubik(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 10.sp,
+                        color: const Color.fromRGBO(255 , 255 , 255 , 1)
+                    ),
+                  ), // to show status of the user like  typing , last seen , online
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+                onPressed: (){},
+                icon: const Icon(MdiIcons.dotsVertical)
+            )
+          ],
+        ),
+        //ChatAppBar( chatUser: widget.chatUser,), // Custom app bar for chat screen
         body: Container(
+          color: Colors.black12,
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Stack(

@@ -16,6 +16,7 @@ import 'package:quickdeed/screens/user_works.dart';
 import 'package:quickdeed/screens/verify_otp_screen.dart';
 import 'package:quickdeed/screens/post_work.dart';
 import 'package:quickdeed/screens/home_screen.dart';
+import 'package:quickdeed/screens/video_call_screen.dart';
 import 'package:quickdeed/screens/work_details_screen.dart';
 import 'package:quickdeed/screens/chat_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -121,6 +122,7 @@ class _MyAppState extends State<MyApp> {
             '/rateWorker' : (context) => const RateWorker(),
             '/track': (context) => const TrackScreen(),
             '/chat':(context) => const ChatPage(),
+            '/video':(context) => const VideoScreen(),
           },
         )
     );

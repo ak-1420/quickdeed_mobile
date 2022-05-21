@@ -47,6 +47,17 @@ class _ChatAppBarState extends State<ChatAppBar> {
             color: Palette.primaryBackgroundColor,
             child: Row(children: <Widget>[
               Expanded(
+                flex: 3,
+                child: Container(
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: (80 - (width * .06)) / 2,
+                      backgroundImage:  NetworkImage(widget.chatUser.profilePic),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
                   //we're dividing the appbar into 7 : 3 ratio. 7 is for content and 3 is for the display picture.
                   flex: 7,
                   child: Center(
@@ -62,7 +73,7 @@ class _ChatAppBarState extends State<ChatAppBar> {
                                   flex: 2,
                                   child: Center(
                                       child: Icon(
-                                    Icons.attach_file,
+                                    Icons.arrow_back,
                                     color: Palette.secondaryColor,
                                   ))),
                               Expanded(
@@ -80,46 +91,36 @@ class _ChatAppBarState extends State<ChatAppBar> {
                             ],
                           )),
                       //second row containing the buttons for media
-                      Container(
-                          height: 23.h,
-                          padding: EdgeInsets.fromLTRB(20, 5, 5, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Photos',
-                                style: textStyle,
-                              ),
-                              VerticalDivider(
-                                width: 30.w,
-                                color: Palette.primaryTextColor,
-                              ),
-                              Text(
-                                'Videos',
-                                style: textStyle,
-                              ),
-                              VerticalDivider(
-                                width: 30.w,
-                                color: Palette.primaryTextColor,
-                              ),
-                              Text('Files', style: textStyle)
-                            ],
-                          )),
+                      // Container(
+                      //     height: 23.h,
+                      //     padding: EdgeInsets.fromLTRB(20, 5, 5, 0),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.start,
+                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                      //       children: <Widget>[
+                      //         Text(
+                      //           'Photos',
+                      //           style: textStyle,
+                      //         ),
+                      //         VerticalDivider(
+                      //           width: 30.w,
+                      //           color: Palette.primaryTextColor,
+                      //         ),
+                      //         Text(
+                      //           'Videos',
+                      //           style: textStyle,
+                      //         ),
+                      //         VerticalDivider(
+                      //           width: 30.w,
+                      //           color: Palette.primaryTextColor,
+                      //         ),
+                      //         Text('Files', style: textStyle)
+                      //       ],
+                      //     )),
                     ],
                   ))),
               //This is the display picture
-              Expanded(
-                flex: 3,
-                child: Container(
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: (80 - (width * .06)) / 2,
-                      backgroundImage:  NetworkImage(widget.chatUser.profilePic),
-                    ),
-                  ),
-                ),
-              ),
+
             ]),
           )),
     );
